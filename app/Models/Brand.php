@@ -18,4 +18,12 @@ class Brand extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    // Define the relationship with users
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'brand_user');
+    }
+
+    
 }

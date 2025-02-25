@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\User;
 use Auth;
 
 class BrandController extends Controller
@@ -15,7 +16,7 @@ class BrandController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
+    
     function __construct()
     {
         $this->middleware('role_or_permission:Brand access|Brand create|Brand edit|Brand delete', ['only' => ['index','show']]);
@@ -26,10 +27,12 @@ class BrandController extends Controller
 
     public function index()
     {
+       
         $brands = Brand::all();
-        //dd($brands);
+
+        $users = User::where('active','1')->whereNotIn('id', [1])->get();
         
-        return view('setting.brand.index',['brands'=>$brands]);
+        return view('setting.brand.index',['brands'=>$brands, 'users'=>$users]);
     }
 
     /**

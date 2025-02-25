@@ -65,4 +65,10 @@ class User extends Authenticatable
          return $this->hasMany(Lead::class)->where('status_id', '2');
     }
 
+    // Define the relationship with brands
+    public function brands()
+    {
+        return $this->belongsToMany(Brand::class, 'brand_user');
+    }
+
 }
