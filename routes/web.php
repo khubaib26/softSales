@@ -68,6 +68,7 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')-
         Route::resource('users','UserController');
         Route::get('/changeUserStatus', [UserController::class, 'changeUserStatus'])->name('userStatus');
         Route::post('/createcredit',[UserController::class, 'createUserCredit'])->name('UsersCredit');
+        Route::post('/assingbrand',[UserController::class, 'assingBrandUser'])->name('AssingBrandUser');
 
         Route::resource('posts','PostController');
         Route::resource('categories','CategoryController');

@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Lead;
+use App\Models\Brand;
+use App\Models\BrandUser;
 use App\Models\LeadStatus;
 use App\Models\UserCredit;
 use Spatie\Permission\Models\Role;
@@ -37,9 +39,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user= User::where('id', '!=', '1')->latest()->get();
+        $user = User::where('id', '!=', '1')->latest()->get();
+        $brands = Brand::where('publish', '1')->get();
 
-        return view('setting.user.index',['users'=>$user]);
+        return view('setting.user.index',['users'=>$user, 'brands'=>$brands]);
     }
 
     /**
@@ -204,5 +207,18 @@ class UserController extends Controller
 
         return response()->json(['success'=>'Store Credit successfully.']);
        
+    }
+
+    //assing brand to user
+    public function assingBrandUser(Request $request){
+       $userId = $request->user_id;
+       $brandIds = $request->brand;
+       
+       foreach($brandIds as $brand){  
+            BrandUser::create([
+                'user_id' => $userId,
+                'brand_id' => $brand
+            ]);
+       }
     }
 }

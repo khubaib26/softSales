@@ -56,6 +56,14 @@ $(document).ready(function() {
         console.log(user_id);
     });
 
+    //Open Brand Assing Model
+    $("#UserTable").on("click", ".assignBrand", function(){    
+        console.log('assign Brand');
+        var user_id = $(this).data('id');
+        document.getElementById("user_hdn2").value = user_id;
+        console.log(user_id);
+    });
+
     // create User Credits
     $('#UserCreditForm').on('submit', function(e){
        e.preventDefault();
@@ -73,6 +81,37 @@ $(document).ready(function() {
                     $("#UserCreditForm")[0].reset();
                     console.log(data);
                     $("#creditModal").modal('hide');
+
+                    // setTimeout(function(){
+                    //         window.location='{{url("/admin/users")}}';
+                    // }, 2000);    
+                },
+                error: function(){
+                    // $('.page-loader-wrapper').css('display', 'none');
+                    // swal("Errors!", "Request Fail!", "error");     
+                }
+        });
+    });
+
+    // create User Credits
+    $('#BrandAssingForm').on('submit', function(e){
+       e.preventDefault();
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+        });
+
+        console.log("form submit");
+
+        $.ajax({
+                url: "{{ route('admin.AssingBrandUser') }}",
+                method:'POST',
+                data: $(this).serialize(), // get all form field value in serialize form
+                success: function(data){
+                    $("#BrandAssingForm")[0].reset();
+                    console.log(data);
+                    $("#brandModal").modal('hide');
 
                     // setTimeout(function(){
                     //         window.location='{{url("/admin/users")}}';

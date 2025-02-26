@@ -99,7 +99,8 @@
                                         </form>
                                         @endcan
                                         <button type="button" data-id="{{$user->id}}" class="btn-sm btn-primary userCredit" data-bs-toggle="modal" data-bs-target="#creditModal"><i class="fa-solid fa-credit-card"></i></i></button>
-                                        <a href="{{ route('admin.users.show',$user->id) }}" title="Profile"><i class="fa-solid fa-credit-card"></i></i></a>
+                                        <a class="btn-sm btn-primary" href="{{ route('admin.users.show',$user->id) }}" title="Profile"><i class="fa-solid fa-user"></i></a>
+                                        <button type="button" data-id="{{$user->id}}" class="btn-sm btn-primary assignBrand" data-bs-toggle="modal" data-bs-target="#brandModal"><i class="fa-solid fa-plus"></i></i></button>
                                     </div>
                                 </td>
                             </tr>
@@ -138,6 +139,41 @@
                     <label for="role_name" class="mt-2">Credits</label>
                     <input id="role_name" type="number" name="credits" placeholder="Enter Credits" class="form-control" />
                 </div>  
+            </div>
+            <div class="col-lg-12 mt-3">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Brand Assing Modal -->
+<div class="modal modal-dialog-scrollable" id="brandModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Assing Brands</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+      <form method="POST" id="BrandAssingForm">
+        <input type="hidden" id="user_hdn2" class="form-control" name="user_id" value="">
+        
+            <div class="row">
+                <div class="col-lg-12">
+                    <label for="role_name" class="mt-2">Select Brands</label>
+                    <select id="brand_id" name="brand[]" class="form-control show-tick ms select2" multiple data-placeholder="Select" required>
+                        @foreach($brands as $brand)
+                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="col-lg-12 mt-3">
                 <button class="btn btn-primary" type="submit">Submit</button>
