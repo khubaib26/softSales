@@ -118,7 +118,9 @@ class UserController extends Controller
             array_push($statusData, $status); // current month
         }
 
-        return view('setting.user.profile',['user'=>$user, 'statusData' => $statusData]);
+        //Get User Assing Brands
+        $brands = $user->brands;
+        return view('setting.user.profile',['user'=>$user, 'statusData' => $statusData, 'brands' =>$brands]);
         //
     }
 
@@ -211,14 +213,26 @@ class UserController extends Controller
 
     //assing brand to user
     public function assingBrandUser(Request $request){
+      
        $userId = $request->user_id;
        $brandIds = $request->brand;
        
-       foreach($brandIds as $brand){  
-            BrandUser::create([
-                'user_id' => $userId,
-                'brand_id' => $brand
-            ]);
-       }
+       $user = User::find($userId);
+
+        foreach($brandIds as $brand){  
+            if ($user->brands->contains($brand)) {
+                return response()->json(['error'=>'User is already assigned to this brand.']);
+            } else {
+                BrandUser::create([
+                    'user_id' => $userId,
+                    'brand_id' => $brand
+                ]);
+                return response()->json(['success'=>'Assigned to this brand.']);
+            }    
+        }
+    }
+
+    public function unassigneBrand(Request $request){
+
     }
 }
