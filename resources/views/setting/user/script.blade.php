@@ -124,5 +124,54 @@ $(document).ready(function() {
         });
     });
 
+    // Delete Invoice
+    $("#brandTable").on("click", ".unAssignBrand", function(){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You are Unassing brand to User!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, confirm!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log("unassing");
+                var user_id = $(this).data('user-id');
+                var brand_id = $(this).data('brand-id');
+                console.log(user_id);
+                console.log(brand_id);
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "{{ route('admin.UnAssingBrandUser') }}",
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'brand_id': brand_id,
+                        'user_id': user_id
+                    },
+                    success: function(data) {
+                        Swal.fire(
+                            'Updated!',
+                            'The user status has been updated.',
+                            'success'
+                        );
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        Swal.fire(
+                            'Error!',
+                            'There was an issue updating the status.',
+                            'error'
+                        );
+                        toggleSwitch.prop('checked', !status);
+                    }
+                });
+            } 
+        });
+    }); 
+
 });
 </script>

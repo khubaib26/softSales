@@ -233,6 +233,11 @@ class UserController extends Controller
     }
 
     public function unassigneBrand(Request $request){
+        $userId = $request->user_id;
+        $brandId = $request->brand_id;
 
+        BrandUser::where(['user_id'=>$userId, 'brand_id'=>$brandId])->delete();
+
+        return response()->json(['success'=>'Unassigned to this brand.']);
     }
 }

@@ -157,16 +157,16 @@
                         <div class="tab-pane fade" id="top-brand" role="tabpanel" aria-labelledby="top-brabd-tab">
                             <h5 class="f-w-600">Assign Brands</h5>
                             <div class="table-responsive profile-table">
-                                <table class="table table-borderless">
+                                <table class="table table-borderless" id="brandTable">
                                     
-                                <thead>
+                                <!-- <thead>
                                     <tr>
                                         <th scope="col" style="width:100px;">ID #</th>
                                         <th scope="col" style="width:200px;"></th>
                                         <th scope="col" style="width:200px;">Brand</th>
                                         <th scope="col">Action</th>
                                     </tr>
-                                </thead>
+                                </thead> -->
                                     <tbody>
                                         @if(count($brands) == 0)
                                             <tr>
@@ -184,13 +184,11 @@
                                                 <img src="{{$brand->logo}}" width="100">
                                             </td>
                                             <td>{{ $brand->name }}</td>
+                                            @can('Brand unassign')
                                             <td>   
-                                            <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST" class="inline">
-                                                @csrf
-                                                @method('delete')
-                                                <button class="btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                            </form>
+                                                <button data-user-id="{{ $user->id }}" data-brand-id="{{ $brand->id }}" class="btn-sm btn-danger unAssignBrand"><i class="fa fa-trash"></i></button>
                                             </td>
+                                            @endcan
                                         </tr>
                                         @endforeach     
                                         @endif    
