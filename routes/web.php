@@ -7,8 +7,8 @@ use App\Http\Controllers\Admin\{
     CategoryController,
     LeadController,
     UserController,
-    DashboardController
-    
+    DashboardController,
+    PaymentGatewayController   
 };
 
 /*
@@ -81,6 +81,8 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')-
         Route::get('/lead-Assign-User',[LeadController::class, 'assign_user'])->name('leadAssingUser');
         Route::get('/changeleadStatus', [LeadController::class, 'leadStatus'])->name('changeLeadStatus');
 
+        //Paymnet Gateways
+        Route::resource('gateways','PaymentGatewayController');
 
         Route::get('/profile',[ProfileController::class,'index'])->name('profile');
         Route::put('/profile-update',[ProfileController::class,'update'])->name('profile.update');

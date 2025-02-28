@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BrandUser extends Model
 {
-    use HasFactory;
+   use HasFactory;
 
    protected $table = 'brand_user';
    protected $primaryKey = 'id'; 
