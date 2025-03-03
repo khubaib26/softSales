@@ -84,6 +84,9 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')-
         //Paymnet Gateways
         Route::resource('gateways','PaymentGatewayController');
 
+        //Team 
+        Route::resource('teams','TeamController');
+
         Route::get('/profile',[ProfileController::class,'index'])->name('profile');
         Route::put('/profile-update',[ProfileController::class,'update'])->name('profile.update');
         Route::get('/mail',[MailSettingController::class,'index'])->name('mail.index');

@@ -1,6 +1,9 @@
 .theme-color {
     --theme-color: #ec8951;
   }
+.merchantBox{
+  padding-top: 10px;    
+}  
   
   :root {
     --theme-color: #ec8951;
@@ -12428,6 +12431,8 @@
   body.rtl .table-category tbody tr td:first-child {
     text-align: right;
   }
+
+ 
   
   @media (min-width: 576px) {
     .rtl .me-sm-3 {

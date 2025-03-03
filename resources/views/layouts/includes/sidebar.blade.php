@@ -43,6 +43,20 @@
                 </a>
             </li>
             @endcanany
+            
+            @canany('Team access','Team add','Team edit','Team delete')
+            <li>
+                <a class="sidebar-header" href="{{ route('admin.teams.index') }}">
+                    <!-- Updated SVG for Brands (Tag Icon) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag">
+                        <path d="M20 12v6a2 2 0 0 1-2 2h-6"></path>
+                        <path d="M12 2H6a2 2 0 0 0-2 2v6"></path>
+                        <line x1="2" y1="2" x2="22" y2="22"></line>
+                    </svg>
+                    <span>Teams</span>
+                </a>
+            </li>
+            @endcanany
 
             @canany('User access','User add','User edit','User delete')
             <li>
@@ -58,6 +72,8 @@
                 </a>
             </li>
             @endcanany
+
+            
 
             @canany('Category access','Category add','Category edit','Category delete')
             <li>

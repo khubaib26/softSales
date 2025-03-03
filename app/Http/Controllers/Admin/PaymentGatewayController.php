@@ -51,7 +51,61 @@ class PaymentGatewayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validation 
+        $request->validate([
+            'merchant_id' => 'required',
+            'descriptor'=>'required',
+            'email' =>'required',
+            'currency'=>'required',
+            'limit'=>'required'
+        ]);
+
+        //dd($request);
+
+        $gateway = PaymentGateway::create([
+            'merchant_id' => $request->merchant_id,
+            'descriptor' => $request->descriptor,
+            'email' => $request->email,
+            'currency' => $request->currency,
+            'limit' => $request->limit,
+
+            'live_auth_login_id' => $request->auth_live_login_id,
+            'live_auth_transaction_key' => $request->auth_live_transaction_key,
+            'test_auth_login_id' => $request->auth_test_login_id,
+            'test_auth_transaction_key' => $request->auth_test_transaction_key,
+            // 'live_stripe_publishable_key' => $request->live_stripe_publishable_key,
+            // 'live_stripe_secret_key' => $request->live_stripe_secret_key,
+            // 'test_stripe_publishable_key' => $request->test_stripe_publishable_key,
+            // 'test_stripe_secret_key' => $request->test_stripe_secret_key,
+            // 'test_paypal_api_username' => $request->test_paypal_api_username,
+            // 'test_paypal_api_password' => $request->test_paypal_api_password,
+            // 'test_paypal_api_signature' => $request->test_paypal_api_signature,
+            // 'live_paypal_api_username' => $request->live_paypal_api_username,
+            // 'live_paypal_api_password' => $request->live_paypal_api_password,
+            // 'live_paypal_api_signature' => $request->live_paypal_api_signature,
+            // 'test_braintree_merchantId' => ,
+            // 'test_braintree_publicKey' => ,
+            // 'test_braintree_privateKey' => ,
+            // 'live_braintree_merchantId' => ,
+            // 'live_braintree_publicKey' => ,
+            // 'live_braintree_privateKey' => ,
+            // 'square_sandbox_application_id' => ,
+            // 'square_sandbox_access_token' => ,
+            // 'square_sandbox_location_id' => ,
+            // 'square_production_application_id' => ,
+            // 'square_production_access_token' => ,
+            // 'square_production_Location_id' => ,
+            // 'twocheckout_sandbox_seller_id' => ,
+            // 'twocheckout_sandbox_publishable_key' => ,
+            // 'twocheckout_sandbox_private_key' => ,
+            // 'twocheckout_live_seller_id' => ,
+            // 'twocheckout_live_publishable_key' => ,
+            // 'twocheckout_live_private_key' => ,
+            'environment' => $request->environment,
+            'status' => $request->publish,    
+        ]);
+
+        return redirect()->back()->withSuccess('Gateway created !!!');
     }
 
     /**

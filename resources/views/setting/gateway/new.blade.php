@@ -59,7 +59,7 @@
                                 <label for="role_name" class="mt-2">Limit</label>
                                 <input id="role_name" type="number" name="limit" value="{{ old('name') }}" placeholder="Enter limit" class="form-control" />
                             </div>
-                            <div class="row" id="authorize" style="display:none;">
+                            <div class="row merchantBox" id="authorize" style="display:none;">
                                 <h5>Authorize Net</h5>
                                 <hr>
                                 <div class="col-lg-6">
@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="role_name" class="mt-2">Test Transaction Key</label>
-                                    <input id="role_name" type="number" name="auth_test_transaction_key" value="{{ old('name') }}" placeholder="Enter Test Transaction Key" class="form-control" />
+                                    <input id="role_name" type="text" name="auth_test_transaction_key" value="{{ old('name') }}" placeholder="Enter Test Transaction Key" class="form-control" />
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="role_name" class="mt-2">Live Login ID</label>
@@ -76,10 +76,11 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="role_name" class="mt-2">Live Transaction Key</label>
-                                    <input id="role_name" type="number" name="auth_live_transaction_key" value="{{ old('name') }}" placeholder="Enter Live Transaction Key" class="form-control" />
+                                    <input id="role_name" type="text" name="auth_live_transaction_key" value="{{ old('name') }}" placeholder="Enter Live Transaction Key" class="form-control" />
                                 </div>
                             </div>
-                            <div class="row" id="strip" style="display:none;">
+                            <?php /*?>
+                            <div class="row merchantBox" id="strip" style="display:none;">
                                 <h5>Strip</h5>
                                 <hr>
                                 <div class="col-lg-6">
@@ -91,7 +92,7 @@
                                     <input id="role_name" type="number" name="limit" value="{{ old('name') }}" placeholder="Enter limit" class="form-control" />
                                 </div>
                             </div>
-                            <div class="row" id="payPal" style="display:none;">
+                            <div class="row merchantBox" id="payPal" style="display:none;">
                                 <h5>PayPal</h5>
                                 <hr>
                                 <div class="col-lg-6">
@@ -103,7 +104,7 @@
                                     <input id="role_name" type="number" name="limit" value="{{ old('name') }}" placeholder="Enter limit" class="form-control" />
                                 </div>
                             </div>
-                            <div class="row" id="braintree" style="display:none;">
+                            <div class="row merchantBox" id="braintree" style="display:none;">
                                 <h5>Braintree</h5>
                                 <hr>
                                 <div class="col-lg-6">
@@ -115,7 +116,7 @@
                                     <input id="role_name" type="number" name="limit" value="{{ old('name') }}" placeholder="Enter limit" class="form-control" />
                                 </div>
                             </div>
-                            <div class="row" id="square" style="display:none;">
+                            <div class="row merchantBox" id="square" style="display:none;">
                                 <h5>Square</h5>
                                 <hr>
                                 <div class="col-lg-6">
@@ -127,7 +128,7 @@
                                     <input id="role_name" type="number" name="limit" value="{{ old('name') }}" placeholder="Enter limit" class="form-control" />
                                 </div>
                             </div>
-                            <div class="row" id="2checkout" style="display:none;">
+                            <div class="row merchantBox" id="2checkout" style="display:none;">
                                 <h5>2 Checkout</h5>
                                 <hr>
                                 <div class="col-lg-6">
@@ -139,10 +140,11 @@
                                     <input id="role_name" type="number" name="limit" value="{{ old('name') }}" placeholder="Enter limit" class="form-control" />
                                 </div>
                             </div>
+                            <?php */?>
 
                             <div class="col-lg-6">
                                 <label for="role_name" class="mt-2">Environment</label>
-                                <select class="form-control" name="publish">
+                                <select class="form-control" name="environment">
                                     <option value="0">Sandbox</option>
                                     <option value="1">Production</option>
                                 </select>
