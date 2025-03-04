@@ -14,8 +14,8 @@ class Team extends Model
     protected $primaryKey = 'id'; 
     protected $guarded = [];
 
-    public function user()
+    public function teamLead()
     {
-        return $this->hasMany(User::class);
-    } 
+        return $this->belongsTo(User::class, 'team_lead_id');
+    }
 }

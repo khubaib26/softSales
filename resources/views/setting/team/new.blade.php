@@ -18,8 +18,8 @@
                     <h3>Dashboard
                     </h3>
                 </div>
-                <li class="breadcrumb-item">Categories</li>
-                <li class="breadcrumb-item active">List</li>
+                <li class="breadcrumb-item">Team</li>
+                <li class="breadcrumb-item active">Create</li>
             </div>
         </div>
     </div>
@@ -29,34 +29,22 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('admin.brands.store')}}">
+                    <form method="POST" action="{{ route('admin.teams.store')}}">
                         @csrf
                         @method('post')
                         <div class="row">
-                            <div class="col-lg-6">
-                                <label for="category" class="mt-2">Select Category</label>
-                                <select class="form-control" name="category_id">
-                                    <option value="">Select Category</option>
-                                    @foreach($categories as $category)
-                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                            <div class="col-lg-12">
+                                <label for="category" class="mt-2">Select Team Head</label>
+                                <select class="form-control" name="team_lead_id">
+                                    <option value="">Select Team Head</option>
+                                    @foreach($users as $user)
+                                    <option value="{{$user->id}}">{{$user->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-lg-6">
-                                <label for="role_name" class="mt-2">Brand Name</label>
+                                <label for="role_name" class="mt-2">Team Name</label>
                                 <input id="role_name" type="text" name="name" value="{{ old('name') }}" placeholder="Enter Brand Name" class="form-control" />
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="role_name" class="mt-2">Brand URL</label>
-                                <input id="role_name" type="url" name="brand_url" value="{{ old('name') }}" placeholder="Enter Brand Name" class="form-control" />
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="role_name" class="mt-2">Brand Logo URL</label>
-                                <input id="role_name" type="url" name="brand_logo_url" value="{{ old('name') }}" placeholder="Enter Brand Name" class="form-control" />
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="role_name" class="mt-2">Brand Fav URL</label>
-                                <input id="role_name" type="url" name="brand_fav_url" value="{{ old('name') }}" placeholder="Enter Brand Name" class="form-control" />
                             </div>
                             <div class="col-lg-6">
                                 <label for="role_name" class="mt-2">Publish</label>

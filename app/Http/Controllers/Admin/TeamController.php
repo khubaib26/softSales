@@ -36,7 +36,8 @@ class TeamController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::where('active','1')->whereNotIn('id', [1])->get();
+        return view('setting.team.new',['users'=>$users]);
     }
 
     /**
@@ -47,7 +48,20 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validation 
+        $request->validate([
+            'name'=>'required',
+            'team_lead_id' =>'required',
+        ]);
+
+        //dd($request);
+
+        $team = Team::create([
+            'name'=>$request->name,
+            'team_lead_id'=>$request->team_lead_id,
+            'publish' =>$request->publish
+        ]);
+        return redirect()->back()->withSuccess('Team created !!!');
     }
 
     /**
@@ -58,7 +72,7 @@ class TeamController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -69,7 +83,9 @@ class TeamController extends Controller
      */
     public function edit($id)
     {
-        //
+        $team = Team::find($id);
+        $users = User::where('active','1')->whereNotIn('id', [1])->get();
+        return view('setting.team.edit',['team'=>$team, 'users'=>$users]);
     }
 
     /**
@@ -79,9 +95,17 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Team $team)
     {
-        //
+        // validation 
+        $validated = $request->validate([
+            'name'=>'required',
+            'team_lead_id' =>'required',
+            'publish' => 'required'
+        ]);
+
+        $team->update($validated);
+        return redirect()->back()->withSuccess('Team updated !!!');
     }
 
     /**
@@ -90,8 +114,9 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Team $team)
     {
-        //
+        $team->delete();
+        return redirect()->back()->withSuccess('Team deleted !!!');
     }
 }

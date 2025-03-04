@@ -52,7 +52,7 @@
                             <tr>
                                 <th scope="row">{{$team->id}}</th>
                                 <td>{{ $team->name }}</td>
-                                <td>{{ $team->user->name }}</td>
+                                <td>{{ $team->teamLead->name }}</td>
                                 <td>
                                     @if($team->publish)
                                     <span class="badge rounded-pill bg-success">Publish</span>

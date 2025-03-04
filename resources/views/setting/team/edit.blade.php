@@ -1,31 +1,67 @@
-<x-app-layout>
-   <div>
-        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
-            <div class="container mx-auto px-6 py-1">
-              <div class="bg-white shadow-md rounded my-6 p-5">
-                <form method="POST" action="{{ route('admin.categories.update',$category->id)}}">
-                  @csrf
-                  @method('put')
-                <div class="flex flex-col space-y-2">
-                  <label for="role_name" class="text-gray-700 select-none font-medium">Category Name</label>
-                  <input id="role_name" type="text" name="name" value="{{ old('name',$category->name) }}"
-                    placeholder="Enter Category"
-                    class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200"
-                  />
+@extends('layouts.app')
+
+@section('header')
+@include('layouts.includes.header')
+@endsection
+
+@section('sidebar')
+@include('layouts.includes.sidebar')
+@endsection
+
+@section('content')
+
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="page-header-left">
+                    <h3>Dashboard
+                    </h3>
                 </div>
-                <div class="flex flex-col space-y-2">
-                  <label for="role_name" class="text-gray-700 select-none font-medium">Publish</label>
-                  <select class="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" name="publish">
-                      <option value="0">Draft</option>
-                      <option value="1">Publish</option>
-                  </select>
-                </div>
-                <div class="text-center mt-16">
-                  <button type="submit" class="bg-blue-500 text-white font-bold px-5 py-1 rounded focus:outline-none shadow hover:bg-blue-500 transition-colors ">Update</button>
-                </div>
-              </div>
+                <li class="breadcrumb-item">Team</li>
+                <li class="breadcrumb-item active">Update</li>
             </div>
-        </main>
+        </div>
     </div>
 </div>
-</x-app-layout>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{{ route('admin.teams.update',$team->id)}}">
+                        @csrf
+                        @method('put')
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="category" class="mt-2">Select Team Head</label>
+                                <select class="form-control" name="team_lead_id">
+                                    <option value="">Select Team Head</option>
+                                    @foreach($users as $user)
+                                    <option value="{{$user->id}}" {{ ($user->id == $team->team_lead_id) ? 'selected' : '' }}>{{$user->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="role_name" class="mt-2">Team Name</label>
+                                <input id="role_name" type="text" name="name" value="{{ old('name',$team->name) }}" placeholder="Enter Brand Name" class="form-control" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="role_name" class="mt-2">Publish</label>
+                                <select class="form-control" name="publish">
+                                    <option value="0" {{ ($team->publish == '0') ? 'selected' : '' }}>Draft</option>
+                                    <option value="1" {{ ($team->publish == '1') ? 'selected' : '' }}>Publish</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 mt-3">
+                            <button class="btn btn-primary" type="submit">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
