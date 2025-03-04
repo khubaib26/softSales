@@ -17,6 +17,8 @@ class CreateBrandsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->unsignedBigInteger('team_id');
+            $table->foreign('team_id')->references('id')->on('teams');
             $table->string('name');
             $table->string('brand_url');
             $table->string('logo');

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddNewColumnToUsersTable extends Migration
+class AddTeamIdToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,8 @@ class AddNewColumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('pseudonym')->after('name')->nullable();
-            $table->string('designation')->after('pseudonym')->nullable();
-            $table->string('phone')->after('email')->nullable();
-            $table->integer('hod')->nullable();
+            $table->unsignedBigInteger('team_id');
+            $table->foreign('team_id')->references('id')->on('teams');
         });
     }
 

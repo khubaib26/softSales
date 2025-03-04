@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddProfileToUsersTable extends Migration
+class AddTeamIdToBrandsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddProfileToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('profile')->after('email')->nullable();
+        Schema::table('brands', function (Blueprint $table) {
+            $table->unsignedBigInteger('team_id');
+            $table->foreign('team_id')->references('id')->on('teams');
         });
     }
 
@@ -25,8 +26,8 @@ class AddProfileToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('profile');
+        Schema::table('brands', function (Blueprint $table) {
+            //
         });
     }
 }

@@ -33,7 +33,7 @@ class CreateLeadsTable extends Migration
             $table->string('lead_zip',50)->nullable();
             $table->string('lead_country',50)->nullable();
             $table->string('lead_url')->nullable();
-            $table->integer('view')->default('0')->nullable();  
+            $table->integer('view')->default('0');  
             $table->string('keyword',100)->nullable();
             $table->string('matchtype',100)->nullable();
             $table->string('msclkid',100)->nullable();
@@ -46,6 +46,10 @@ class CreateLeadsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             
             $table->integer('creator_id')->default('0');
+
+            $table->unsignedBigInteger('status_update_uid')->nullable();
+            $table->foreign('status_update_uid')->references('id')->on('users');
+            $table->integer('status_update_dt')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

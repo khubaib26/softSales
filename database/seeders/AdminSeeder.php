@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Team;
 use App\Models\LeadStatus;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -22,15 +23,23 @@ class AdminSeeder extends Seeder
             'name'=>'Admin',
             'email'=>'admin@admin.com',
             'password'=>bcrypt('password'),
-            'profile' => 'user.avif'
+            'profile' => 'user.avif',
+            'team_id' => '0'
         ]);
 
         $writer = User::create([
             'name'=>'writer',
             'email'=>'writer@writer.com',
-            'password'=>bcrypt('password')
+            'password'=>bcrypt('password'),
+            'profile' => 'user.avif',
+            'team_id' => '1'
         ]);
 
+        $team = Team::create([
+            'name'=>'writer',
+            'team_lead_id'=>'1',
+            'publish' => '1'
+        ]);
 
         $admin_role = Role::create(['name' => 'admin']);
         $writer_role = Role::create(['name' => 'writer']);
