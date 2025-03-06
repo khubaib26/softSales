@@ -14,8 +14,7 @@ class AddTeamIdToBrandsTable extends Migration
     public function up()
     {
         Schema::table('brands', function (Blueprint $table) {
-            $table->unsignedBigInteger('team_id');
-            $table->foreign('team_id')->references('id')->on('teams');
+           
         });
     }
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Lead;
+use App\Models\Team;
 use App\Models\Brand;
 use App\Models\BrandUser;
 use App\Models\LeadStatus;
@@ -53,7 +54,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::get();
-        return view('setting.user.new',['roles'=>$roles]);
+        $teams = Team::where('publish','1')->get();
+        return view('setting.user.new',['roles'=>$roles, 'teams' =>$teams]);
     }
 
     /**
@@ -66,6 +68,7 @@ class UserController extends Controller
     {
         //dd($request);
         $request->validate([
+            'team_id'=>'required',
             'name'=>'required',
             'pseudonym'=>'required',
             'email' => 'required|email|unique:users',
@@ -73,6 +76,7 @@ class UserController extends Controller
         ]);
 
         $user = User::create([
+            'team_id'=>$request->team_id,
             'name'=>$request->name,
             'pseudonym'=>$request->pseudonym,
             'designation'=>$request->designation,

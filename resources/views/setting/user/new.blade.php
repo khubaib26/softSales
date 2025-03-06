@@ -32,6 +32,15 @@
                     <form method="POST" action="{{ route('admin.users.store')}}">
                         @csrf
                         @method('post')
+                        <div class="col-lg-6">
+                                <label for="category" class="mt-2">Select Team</label>
+                                <select class="form-control" name="team_id">
+                                    <option value="">Select Team</option>
+                                    @foreach($teams as $team)
+                                    <option value="{{$team->id}}">{{$team->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         <div class="row">
                             <div class="flex flex-col space-y-2 col-lg-6">
                                 <label for="name" class="mt-2">User Name</label>

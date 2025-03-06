@@ -43,7 +43,8 @@
                                 <th scope="col">User Name / Pseudonym </th>
                                 <th scope="col">Designation</th>
                                 <th scope="col">Contact</th>
-                                <th scope="col">Credits</th>
+                                <th scope="col">Team</th>
+                                {{--<th scope="col">Credits</th>--}}
                                 <th scope="col">Role</th> 
                                 <th>Status</th>
                                 <th scope="col" style="width:200px;">Actions</th>
@@ -59,7 +60,8 @@
                                    {{ $user->designation }}<br> 
                                 </td>
                                 <td>{{ $user->email }}<br>{{ $user->phone }}</td>
-                                <td>
+                                <td>{{ $user->team?->name }}</td>
+                                {{--<td>
                                 @php
                                     $credits = json_decode($user->credits->first(), true);
                                     //print_r($credits); 
@@ -72,7 +74,7 @@
                                 <div class="progress" style="height: 8px;">
                                     <div class="progress-bar bg-primary" role="progressbar" style="width: 30%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
-                                </td>
+                                </td>--}}
                                 <td>
                                     @foreach($user->roles as $role)
                                     <span class="badge rounded-pill bg-primary">{{ $role->name }}</span>
@@ -98,7 +100,7 @@
                                             <button class="btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                         </form>
                                         @endcan
-                                        <button type="button" data-id="{{$user->id}}" class="btn-sm btn-primary userCredit" data-bs-toggle="modal" data-bs-target="#creditModal"><i class="fa-solid fa-credit-card"></i></i></button>
+                                        {{--<button type="button" data-id="{{$user->id}}" class="btn-sm btn-primary userCredit" data-bs-toggle="modal" data-bs-target="#creditModal"><i class="fa-solid fa-credit-card"></i></i></button>--}}
                                         <a class="btn-sm btn-primary" href="{{ route('admin.users.show',$user->id) }}" title="Profile"><i class="fa-solid fa-user"></i></a>
                                         @can('Brand assign')
                                         <button type="button" data-id="{{$user->id}}" class="btn-sm btn-primary assignBrand" data-bs-toggle="modal" data-bs-target="#brandModal"><i class="fa-solid fa-plus"></i></i></button>

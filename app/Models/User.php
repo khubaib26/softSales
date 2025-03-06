@@ -19,6 +19,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
+        'team_id',
         'name',
         'email',
         'password',
@@ -74,5 +75,11 @@ class User extends Authenticatable
     public function ledTeams()
     {
         return $this->hasMany(Team::class, 'team_lead_id');
+    }
+
+    // User belongs to a team
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
     }
 }
