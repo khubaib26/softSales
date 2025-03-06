@@ -42,6 +42,7 @@
                                 <th scope="col" style="width:150px;">&nbsp;</th>
                                 <th scope="col" style="width:300px;">Brand Name</th>
                                 <th scope="col">Unit</th>
+                                <th scope="col">Team</th>
                                 <th scope="col">Status</th>
                                 <th scope="col" style="width:200px;">Actions</th>
                             </tr>
@@ -53,6 +54,7 @@
                                 <th scope="row"><img src="{{ $brand->logo }}" width="100"></th>
                                 <td><a href="{{ $brand->brand_url }}" traget="_blank">{{ $brand->name }}</a></td>
                                 <td>{{ $brand->category->name }}</td>
+                                <td>{{ $brand->team->name }}</td>
                                 <td>
                                     @if($brand->publish)
                                     <span class="badge rounded-pill bg-success">Publish</span>

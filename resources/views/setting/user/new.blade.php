@@ -40,7 +40,7 @@
                                     <option value="{{$team->id}}">{{$team->name}}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                        </div>
                         <div class="row">
                             <div class="flex flex-col space-y-2 col-lg-6">
                                 <label for="name" class="mt-2">User Name</label>

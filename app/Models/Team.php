@@ -23,4 +23,10 @@ class Team extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    // Team has many brands
+    public function brands()
+    {
+        return $this->hasMany(Brand::class);
+    }
 }

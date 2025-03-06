@@ -33,6 +33,16 @@
                         @csrf
                         @method('post')
                         <div class="row">
+                            
+                            <div class="col-lg-6">
+                                <label for="category" class="mt-2">Select Team</label>
+                                <select class="form-control" name="team_id">
+                                    <option value="">Select Team</option>
+                                    @foreach($teams as $team)
+                                    <option value="{{$team->id}}">{{$team->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="col-lg-6">
                                 <label for="category" class="mt-2">Select Category</label>
                                 <select class="form-control" name="category_id">

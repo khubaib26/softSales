@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Brand;
+use App\Models\Team;
 use App\Models\Category;
 use App\Models\User;
 use Auth;
@@ -43,7 +44,8 @@ class BrandController extends Controller
     public function create()
     {
         $category = Category::all();
-        return view('setting.brand.new',['categories'=>$category]);
+        $teams = Team::where('publish','1')->get();
+        return view('setting.brand.new',['categories'=>$category, 'teams' =>$teams]);
     }
 
     /**
@@ -57,6 +59,7 @@ class BrandController extends Controller
         // validation 
         $request->validate([
             'name'=>'required',
+            'team_id'=>'required',
             'brand_url' =>'required',
             'brand_logo_url'=>'required'
         ]);
@@ -65,6 +68,7 @@ class BrandController extends Controller
 
         $category = Brand::create([
             'category_id'=>$request->category_id,
+            'team_id'=>$request->team_id,
             'name'=>$request->name,
             'brand_url'=>$request->brand_url,
             'logo'=>$request->brand_logo_url,

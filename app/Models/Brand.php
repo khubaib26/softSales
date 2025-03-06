@@ -25,5 +25,12 @@ class Brand extends Model
         return $this->belongsToMany(User::class, 'brand_user');
     }
 
+     // Brand belongs to a team
+     public function team()
+     {
+         return $this->belongsTo(Team::class);
+     }
+ 
+
     
 }
