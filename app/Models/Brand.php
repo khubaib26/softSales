@@ -30,6 +30,12 @@ class Brand extends Model
      {
          return $this->belongsTo(Team::class);
      }
+
+    // Brand has many clients
+    public function clients()
+    {
+        return $this->hasMany(Client::class);
+    }
  
 
     

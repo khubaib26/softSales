@@ -8,7 +8,8 @@ use App\Http\Controllers\Admin\{
     LeadController,
     UserController,
     DashboardController,
-    PaymentGatewayController   
+    PaymentGatewayController,
+    ClientController   
 };
 
 /*
@@ -86,6 +87,9 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')-
 
         //Team 
         Route::resource('teams','TeamController');
+
+        //Client 
+        Route::resource('clients','ClientController');
 
         Route::get('/profile',[ProfileController::class,'index'])->name('profile');
         Route::put('/profile-update',[ProfileController::class,'update'])->name('profile.update');
