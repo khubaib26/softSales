@@ -4,31 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Brand;
-use App\Models\Client;
-use App\Models\Team;
-use Auth;
 
-class ClientController extends Controller
+class InvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
-    function __construct()
-    {
-        $this->middleware('role_or_permission:Client access|Client create|Client edit|Client delete', ['only' => ['index','show']]);
-        $this->middleware('role_or_permission:Client create', ['only' => ['create','store']]);
-        $this->middleware('role_or_permission:Client edit', ['only' => ['edit','update']]);
-        $this->middleware('role_or_permission:Client delete', ['only' => ['destroy']]);
-    } 
-
     public function index()
     {
-        $clients = Client::all();
-        return view('setting.client.index',['clients'=>$clients]);
+        //
     }
 
     /**
@@ -38,8 +24,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        $brands = Brand::where('publish','1')->get();
-        return view('setting.client.new',['brands'=>$brands]);
+        //
     }
 
     /**
@@ -50,27 +35,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-    
-        // validation 
-         $request->validate([
-            'name'=>'required',
-            'brand_id' => 'required',
-            'email' => 'required',
-            'phone' => 'required'
-        ]);
-
-        //dd($request);
-
-        $client = client::create([
-            'name'=>$request->name,
-            'brand_id'=>$request->brand_id,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'client_description' => $request->client_description,
-            'status' =>$request->publish
-        ]);
-        return redirect()->back()->withSuccess('Client created !!!');
+        //
     }
 
     /**
