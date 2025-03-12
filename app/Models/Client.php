@@ -17,7 +17,7 @@ class Client extends Model
     // Client belongs to a brand
     public function brand()
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
     
 }

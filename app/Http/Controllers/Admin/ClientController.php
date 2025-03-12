@@ -27,7 +27,19 @@ class ClientController extends Controller
 
     public function index()
     {
-        $clients = Client::all();
+        $userId = Auth::user()->id;
+         
+        if(Auth::user()->hasRole('admin'))
+        {
+            $clients = Client::all();
+        }else{
+            $clients = Client::whereHas('brand', function($query) use ($userId) {
+                $query->whereHas('users', function($query) use ($userId) {
+                    $query->where('users.id', $userId);
+                });
+            })->get();
+        }
+
         return view('setting.client.index',['clients'=>$clients]);
     }
 
@@ -38,7 +50,17 @@ class ClientController extends Controller
      */
     public function create()
     {
-        $brands = Brand::where('publish','1')->get();
+        $userId = Auth::user()->id;
+         
+        if(Auth::user()->hasRole('admin'))
+        {
+            $brands = Brand::where('publish','1')->get();
+        }else{
+            $brands = Brand::where('publish','1')->whereHas('users', function($query) use ($userId) {
+                $query->where('users.id', $userId);
+            })->get();
+        }
+        
         return view('setting.client.new',['brands'=>$brands]);
     }
 

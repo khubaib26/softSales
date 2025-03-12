@@ -9,7 +9,8 @@ use App\Http\Controllers\Admin\{
     UserController,
     DashboardController,
     PaymentGatewayController,
-    ClientController   
+    ClientController,
+    InvoiceController   
 };
 
 /*
@@ -90,6 +91,9 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')-
 
         //Client 
         Route::resource('clients','ClientController');
+        
+        //Invoice 
+        Route::resource('invoices','InvoiceController');
 
         Route::get('/profile',[ProfileController::class,'index'])->name('profile');
         Route::put('/profile-update',[ProfileController::class,'update'])->name('profile.update');

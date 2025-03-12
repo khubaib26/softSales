@@ -4,6 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Brand;
+use App\Models\Client;
+use App\Models\Team;
+use App\Models\Invoice;
+use App\Models\PaymentGateway;
+use Auth;
 
 class InvoiceController extends Controller
 {
@@ -12,9 +18,30 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    function __construct()
+    {
+         $this->middleware('role_or_permission:Invoice access|Invoice create|Invoice edit|Invoice delete', ['only' => ['index','show']]);
+         $this->middleware('role_or_permission:Invoice create', ['only' => ['create','store']]);
+         $this->middleware('role_or_permission:Invoice edit', ['only' => ['edit','update']]);
+         $this->middleware('role_or_permission:Invoice delete', ['only' => ['destroy']]);
+    } 
+    
     public function index()
     {
-        //
+        $userId = Auth::user()->id;
+         
+        if(Auth::user()->hasRole('admin'))
+        {
+            $invoices = Invoice::all();
+        }else{
+            // $clients = Client::whereHas('brand', function($query) use ($userId) {
+            //     $query->whereHas('users', function($query) use ($userId) {
+            //         $query->where('users.id', $userId);
+            //     });
+            // })->get();
+        } 
+        return view('setting.invoice.index',['invoices'=>$invoices]);
     }
 
     /**
@@ -24,7 +51,29 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        $userId = Auth::user()->id;
+         
+        if(Auth::user()->hasRole('admin'))
+        {
+            $brands = Brand::where('publish','1')->get();
+            $clients = Client::all();
+
+        }else{
+            // user assing Brands
+            $brands = Brand::where('publish','1')->whereHas('users', function($query) use ($userId) {
+                $query->where('users.id', $userId);
+            })->get();
+
+            //user asing brands client
+            $clients = Client::whereHas('brand', function($query) use ($userId) {
+                $query->whereHas('users', function($query) use ($userId) {
+                    $query->where('users.id', $userId);
+                });
+            })->get();
+        }
+        $merchants = PaymentGateway::where('status','1')->get();
+        
+        return view('setting.invoice.new',['brands'=>$brands, 'merchants' =>$merchants, 'clients'=>$clients]);
     }
 
     /**

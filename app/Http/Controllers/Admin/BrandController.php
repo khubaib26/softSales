@@ -28,8 +28,16 @@ class BrandController extends Controller
 
     public function index()
     {
-       
-        $brands = Brand::all();
+        $userId = Auth::user()->id;
+         
+        if(Auth::user()->hasRole('admin'))
+        {
+            $brands = Brand::all();
+        }else{
+            $brands = Brand::whereHas('users', function($query) use ($userId) {
+                $query->where('users.id', $userId);
+            })->get();
+        }
 
         $users = User::where('active','1')->whereNotIn('id', [1])->get();
         

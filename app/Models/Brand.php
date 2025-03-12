@@ -22,7 +22,7 @@ class Brand extends Model
     // Define the relationship with users
     public function users()
     {
-        return $this->belongsToMany(User::class, 'brand_user');
+        return $this->belongsToMany(User::class, 'brand_user', 'brand_id', 'user_id');
     }
 
      // Brand belongs to a team
@@ -34,9 +34,8 @@ class Brand extends Model
     // Brand has many clients
     public function clients()
     {
-        return $this->hasMany(Client::class);
+        return $this->hasMany(Client::class, 'brand_id');
     }
- 
 
     
 }
