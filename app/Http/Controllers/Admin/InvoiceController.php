@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Brand;
 use App\Models\Client;
 use App\Models\Team;
+use App\Models\User;
 use App\Models\Invoice;
 use App\Models\PaymentGateway;
+use Illuminate\Support\Str;
 use Auth;
 
 class InvoiceController extends Controller
@@ -35,11 +37,7 @@ class InvoiceController extends Controller
         {
             $invoices = Invoice::all();
         }else{
-            // $clients = Client::whereHas('brand', function($query) use ($userId) {
-            //     $query->whereHas('users', function($query) use ($userId) {
-            //         $query->where('users.id', $userId);
-            //     });
-            // })->get();
+            //$invoices = Invoice::where('');
         } 
         return view('setting.invoice.index',['invoices'=>$invoices]);
     }
@@ -72,8 +70,9 @@ class InvoiceController extends Controller
             })->get();
         }
         $merchants = PaymentGateway::where('status','1')->get();
+        $users = User::where('active','1')->whereNotIn('id', [1])->get();
         
-        return view('setting.invoice.new',['brands'=>$brands, 'merchants' =>$merchants, 'clients'=>$clients]);
+        return view('setting.invoice.new',['brands'=>$brands, 'merchants' =>$merchants, 'clients'=>$clients, 'users'=>$users]);
     }
 
     /**
@@ -84,7 +83,55 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $creatorid  = Auth::user()->id;
+        $userRole = (Auth::user()->hasRole('admin')?'ADMIN':'USR');
+        $userId = $request->user_id;
+        $brandId = $request->brand_id;
+        $merchantId = $request->merchant_id;
+        $clientId = $request->client_id;
+        $name = $request->name;
+        $phone = $request->phone;
+        $email = $request->email;
+        $currency = $request->currency;
+        $service = $request->service;
+        $amount = $request->amount;
+        $due_date = $request->due_date;
+        $description = $request->description;
+
+        //check client exist
+        $client_exists = Client::where('email',$email)->first();
+        
+        //dd($client_exists); 
+        if($clientId == null){
+            $client = client::create([
+                'name'=>$name,
+                'brand_id'=> $brandId,
+                'email' => $email,
+                'phone' => $phone,
+                'status' =>'1'
+            ]);  
+            $clientId = $client->id;
+        }
+
+        $invoice = Invoice::create([
+            'invoice_number' => Str::random(10),
+            'brand_id' => $brandId,
+            'client_id' => $clientId,
+            'user_id' => $userId,
+            'creator_id' => $creatorid,
+            'creator_role' => $userRole,
+            'amount' => $amount,
+            'due_date' => $due_date,
+            'service' => $service,
+            'sales_type' => 'Fresh',
+            'status' => 'due',
+            'descriptione' => $description,
+            'currency' => $currency,
+            'gateway_id' => $merchantId
+            
+        ]);
+        return redirect()->back()->withSuccess('Brand created !!!');
     }
 
     /**
@@ -130,5 +177,26 @@ class InvoiceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function get_brand_user(Request $request){
+        
+        $brnadId = $request->BrandId;
+       
+        $users = User::whereHas('brands', function($query) use ($brnadId) {
+            $query->where('brands.id', $brnadId);
+        })->get();
+
+        $cxmUsers = '';
+        
+       if(count($users) > 0){
+            foreach ($users as $user) {
+                $cxmUsers .= '<option>&nbsp;&nbsp;&nbsp;Select Agent</option>';
+                $cxmUsers .= '<option value="' . $user->id . '">' . $user->name .' - '.$user->pseudonym.'</option>';
+            }
+       }else{
+            $cxmUsers .= '<option value="1">No Agent Assing Create Invoice as Admin</option>';
+       }
+        return $cxmUsers;
     }
 }

@@ -42,7 +42,8 @@
                                 <th scope="col">ID</th>
                                 <th scope="col">Brand</th>
                                 <th scope="col">Client</th>
-                                <th scope="col">Date</th>
+                                <th scope="col">Agent</th>
+                                <th scope="col">Due Date</th>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Sales Type</th>
                                 <th>Status</th>
@@ -50,15 +51,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @can('invoices access')
+                            @can('Invoice access')
                             @foreach($invoices as $invoice)
+                            @php
+                            $color = ($invoice->status == 'due') ? 'bg-warning' : (($invoice->status == 'paid') ? 'bg-success' : (($invoice->status == 'refund') ? 'bg-info' : 'bg-danger'));   
+                            @endphp
                             <tr>
-                                <th scope="row">{{ $invoice->invoice_number }}</th>
-                                <td>Brand</td>
-                                <td>Client</td>
+                                <th scope="row">{{ $invoice->id }}</th>
+                                <td>{{ $invoice->brand->name }}</td>
+                                <td>{{ $invoice->client->name }}</td>
+                                <td>{{ $invoice->user->name }}</td>
                                 <td>{{ $invoice->due_date }}</td>
+                                <td>${{ $invoice->amount }}</td>
                                 <td>{{ $invoice->sales_type }}</td>
-                                <td>{{ $invoice->status }}</td>
+                                <td class="badge rounded-pill {{$color}}">{{ $invoice->status }}</td>
                                 <td>
                                     <div class="d-flex flex-row">
                                         @can('invoices edit')

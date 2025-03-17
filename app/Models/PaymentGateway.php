@@ -14,8 +14,16 @@ class PaymentGateway extends Model
     protected $primaryKey = 'id'; 
     protected $guarded = [];
 
+    // public function merchant()
+    // {
+    //     return $this->belongsTo(Merchant::class);
+    // }
+    
+    // PaymentGateway belongs to a Merchant
     public function merchant()
     {
-        return $this->belongsTo(Merchant::class);
+        return $this->belongsTo(Merchant::class, 'merchant_id');
     }
+
+
 }

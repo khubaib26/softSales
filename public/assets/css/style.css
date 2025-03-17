@@ -3,7 +3,7 @@
   }
 .merchantBox{
   padding-top: 10px;    
-}  
+} 
   
   :root {
     --theme-color: #ec8951;
@@ -3024,6 +3024,8 @@
   .ck-rounded-corners {
     border-radius: 0 !important;
   }
+
+  .cxm-loader {position:absolute; top:60%; left:20px; z-index:1;}
   
   /**=====================
        Animation css start
@@ -4499,6 +4501,7 @@
   }
   .table td {
     color: #313131;
+    text-transform: capitalize;
   }
   .table td a i {
     font-size: 18px;
@@ -12431,6 +12434,8 @@
   body.rtl .table-category tbody tr td:first-child {
     text-align: right;
   }
+
+ 
 
  
   

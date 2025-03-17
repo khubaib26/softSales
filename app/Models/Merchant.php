@@ -18,4 +18,10 @@ class Merchant extends Model
     {
         return $this->hasMany(PaymentGateway::class);
     }  
+
+    // Merchant has many PaymentGateways
+    public function paymentGateways()
+    {
+        return $this->hasMany(PaymentGateway::class, 'merchant_id');
+    }
 }

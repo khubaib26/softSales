@@ -82,4 +82,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Team::class);
     }
+
+    public function invoice()
+    {
+        return $this->hasMany(Invoice::class, 'user_id');
+    }
 }

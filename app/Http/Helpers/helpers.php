@@ -45,5 +45,10 @@ function conversion_rate($convertedLead, $totalLead){
   }  
 }
 
+// AuthorizeNet payment Function
+function processAuthorizeNetPayment($data){
+    return $data;
+}
+
 
 ?>

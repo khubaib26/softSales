@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\LeadController;
+use App\Http\Controllers\Admin\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 //Lead API Route for Brands
 Route::post('create_lead', [LeadController::class, 'create_lead_api']);
+
+//make_payment_transaction
+Route::post('create_payment', [PaymentController::class, 'make_payment_transaction']);

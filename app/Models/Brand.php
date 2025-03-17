@@ -37,5 +37,10 @@ class Brand extends Model
         return $this->hasMany(Client::class, 'brand_id');
     }
 
+    public function invoice()
+    {
+        return $this->hasMany(Invoice::class, 'brand_id');
+    }
+
     
 }

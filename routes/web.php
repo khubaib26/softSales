@@ -94,6 +94,7 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')-
         
         //Invoice 
         Route::resource('invoices','InvoiceController');
+        Route::get('/get-brand-user',[InvoiceController::class,'get_brand_user'])->name('get.brand.user');
 
         Route::get('/profile',[ProfileController::class,'index'])->name('profile');
         Route::put('/profile-update',[ProfileController::class,'update'])->name('profile.update');
