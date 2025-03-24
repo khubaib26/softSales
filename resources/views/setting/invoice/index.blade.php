@@ -67,6 +67,7 @@
                                 <td class="badge rounded-pill {{$color}}">{{ $invoice->status }}</td>
                                 <td>
                                     <div class="d-flex flex-row">
+                                        <a class="btn-sm btn-primary" href="{{ route('admin.payments.show',$invoice->invoice_number) }}" title="Profile"><i class="fa-solid fa-credit-card"></i></a>
                                         @can('invoices edit')
                                         <a href="{{route('admin.invoices.edit',$invoice->id)}}" class="btn-sm btn-success"><i class="fa fa-pencil text-white"></i></a>
                                         @endcan

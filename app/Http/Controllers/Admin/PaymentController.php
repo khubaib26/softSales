@@ -15,7 +15,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        return view('setting.payment.index');
     }
 
     /**
@@ -47,7 +47,9 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        //
+        $invoice = Invoice::where(['invoice_number'=>$id])->first();
+        dd($invoice);
+        return view('setting.payment.index');
     }
 
     /**
@@ -90,14 +92,15 @@ class PaymentController extends Controller
         $invoiceNumber = $request->invoice_number;
 
         $invoiceData = Invoice::where('invoice_number',$invoiceNumber)->first();
-        //$invoice = Invoice::with('paymentGateway.merchant')->find(1);
+       
         // Get Merchant 
         $paymentGateway = $invoiceData->paymentGateway->merchant->name;
         $client = $invoiceData->client;
 
         $paymentProcessData = array(
             "invoiceNumber" => $request->invoice_number,
-            "name" => $request->name,
+            "first_name" => $request->first_name,
+            "last_name" => $request->last_name,
             "email" => $request->email,
             "phone" => $request->phoner,
             "amount" => $request->amount,
@@ -105,7 +108,8 @@ class PaymentController extends Controller
             "card_number" => $request->card_number,
             "card_exp_month" => $request->card_exp_month,
             "card_exp_year" => $request->card_exp_year,
-            "card_cvv" => $request->card_cvv
+            "card_cvv" => $request->card_cvv,
+            "invoice_data" => $invoiceData,
         );
 
         switch ($paymentGateway) {
