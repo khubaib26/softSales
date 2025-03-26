@@ -79,19 +79,28 @@
                                     <input id="role_name" type="text" name="auth_live_transaction_key" value="{{ old('name') }}" placeholder="Enter Live Transaction Key" class="form-control" />
                                 </div>
                             </div>
-                            <?php /*?>
+                            
                             <div class="row merchantBox" id="strip" style="display:none;">
                                 <h5>Strip</h5>
                                 <hr>
                                 <div class="col-lg-6">
-                                    <label for="role_name" class="mt-2">Currency</label>
-                                    <input id="role_name" type="text" name="currency" value="{{ old('name') }}" placeholder="Enter Currency" class="form-control" />
+                                    <label for="role_name" class="mt-2">Test Publish Key</label>
+                                    <input id="role_name" type="text" name="test_stripe_publishable_key" value="{{ old('name') }}" placeholder="Enter Test Publish Key" class="form-control" />
                                 </div>
                                 <div class="col-lg-6">
-                                    <label for="role_name" class="mt-2">Limit</label>
-                                    <input id="role_name" type="number" name="limit" value="{{ old('name') }}" placeholder="Enter limit" class="form-control" />
+                                    <label for="role_name" class="mt-2">Test Secret Key</label>
+                                    <input id="role_name" type="text" name="test_stripe_secret_key" value="{{ old('name') }}" placeholder="Enter Test Secret Key" class="form-control" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="role_name" class="mt-2">Live Publish Key</label>
+                                    <input id="role_name" type="text" name="live_stripe_publishable_key" value="{{ old('name') }}" placeholder="Enter Live Publish Key" class="form-control" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="role_name" class="mt-2">Live Secret Key</label>
+                                    <input id="role_name" type="text" name="live_stripe_secret_key" value="{{ old('name') }}" placeholder="EnterLive Secret Key" class="form-control" />
                                 </div>
                             </div>
+                            <?php /*?>
                             <div class="row merchantBox" id="payPal" style="display:none;">
                                 <h5>PayPal</h5>
                                 <hr>

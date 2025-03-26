@@ -48,8 +48,10 @@ class PaymentController extends Controller
     public function show($id)
     {
         $invoice = Invoice::where(['invoice_number'=>$id])->first();
-        dd($invoice);
-        return view('setting.payment.index');
+
+        //$paymentGateway = $invoice->paymentGateway->live_stripe_publishable_key;
+        //dd($paymentGateway);
+        return view('setting.payment.index',['invoice'=>$invoice]);
     }
 
     /**
@@ -87,7 +89,7 @@ class PaymentController extends Controller
     }
 
     public function make_payment_transaction(Request $request){
-       
+        //dd($request);
        
         $invoiceNumber = $request->invoice_number;
 
@@ -110,14 +112,15 @@ class PaymentController extends Controller
             "card_exp_year" => $request->card_exp_year,
             "card_cvv" => $request->card_cvv,
             "invoice_data" => $invoiceData,
+            "stripeToken" => $request->stripeToken
         );
 
         switch ($paymentGateway) {
             case 'Authorize':
                 $paymentStatus = processAuthorizeNetPayment($paymentProcessData);
                 break;
-            case 'stripe':
-                // Process Stripe payment
+            case 'Stripe':
+                $paymentStatus = processStripePayment($paymentProcessData);
                 break;
             case 'paypal':
                 // Process PayPal payment

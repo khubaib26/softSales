@@ -3,6 +3,7 @@
 use App\Models\PaymentGateway;
 use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
+//use Stripe;
 
 
  // convert 1000 to K
@@ -173,6 +174,65 @@ function processAuthorizeNetPayment($data){
     return $statusMsg;
     
     //return $data;
+}
+
+// Stripe Payment Function
+function processStripePayment($data){
+    //dd("Stripe payment process");
+    $gatewayId = $data['invoice_data']['gateway_id'];
+    
+    //Get Merchant Information
+    $paymentMethod = PaymentGateway::where(['status' => 1, 'id' =>$gatewayId])->first();
+    
+    // Check Merchant Environment 
+    if($paymentMethod->environment == 1){
+        //Production
+        $publishableKey = $paymentMethod->live_stripe_publishable_key;
+        $secretKey = $paymentMethod->live_stripe_secret_key; 
+    }else{
+        //SandBox
+        $publishableKey = $paymentMethod->test_stripe_publishable_key;
+		$secretKey = $paymentMethod->test_stripe_secret_key;
+    }
+
+    Stripe\Stripe::setApiKey($secretKey);
+
+    try {
+        $paymentResult = Stripe\Charge::create ([
+            "amount" => $data['amount'] * 100,
+            "currency" => "usd",
+            "source" => $data['stripeToken'],
+            "description" => "Test payment from tutorialsocean.com." 
+        ]);
+        //dd($paymentResult);
+        if($paymentResult['status'] == 'succeeded') {
+            return response()->json([
+                'success' => true, 
+                'msg' => 'Payment has been Successfully done! ',
+                'payment' => $paymentResult
+            ]);
+        }
+    } catch (\Stripe\Exception\CardException $e) {
+            $paymentResult = $e->getMessage();
+        
+            return response()->json([
+                'success' => false, 
+                'msg' => 'Payment Fail!',
+                'payment' => $paymentResult
+            ]);
+    } catch (\Exception $e) {
+        // Handle other errors
+        \Log::error($e);
+            $paymentResult = $e->getMessage();
+            return response()->json([
+                'success' => false, 
+                'msg' => 'Payment Fail!',
+                'payment' => $paymentResult
+            ]);
+    }
+    
+    
+    //return $statusMsg;
 }
 
 

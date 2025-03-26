@@ -13,33 +13,83 @@
 
 <body>
     <div class="container-fluid">
-        <!-- <header>
+        <header> 
             <div class="limiter">
-                <h3>Demo: Credit Card Validation With Payform.js</h3>
-                <a href="http://tutorialzine.com/2016/11/simple-credit-card-validation-form/">Download</a>
+                <h3>{{$invoice->brand->name}}</h3>
+                <a>{{$invoice->brand->phone}}</a>
+                <img src="{{$invoice->brand->logo}}" width="100">
             </div>
-        </header> -->
+        </header>
         <div class="creditCardForm">
             <div class="heading">
                 <h1>Confirm Purchase</h1>
             </div>
+            <div class="invoice-details">
+                <div style="width: 40%;float: left;">
+                    <h4>Invoice Number #: {{$invoice->invoice_number}}</h4>                    
+                </div>
+                <div style="width: 40%;float: right;">
+                    <h5>Payment Gateway: {{$invoice->paymentGateway->merchant->name}}</h5>                    
+                </div>
+            </div>
             <div class="payment">
-                <form>
+                @php
+                if($invoice->paymentGateway->merchant->name == 'Stripe'){
+                    if($invoice->paymentGateway->environment == 1){
+                        $stripeData = 'data-stripe-publishable-key='.$invoice->paymentGateway->live_stripe_publishable_key;      
+                    }else{
+                        $stripeData = 'data-stripe-publishable-key='.$invoice->paymentGateway->test_stripe_publishable_key; 
+                    }
+                }else{
+                    $stripeData = '';
+                }
+                @endphp
+                <form id="order_form" method="post" action="{{ route('admin.makeTransaction')}}" {{ $stripeData }}>
+                @csrf
+                @method('post')
+                <input type="hidden" name="invoice_number" value="{{$invoice->invoice_number}}">
+                <input type="hidden" name="amount" value="{{$invoice->amount}}">
+                <input type="hidden" name="stripeToken" value=""/>
+
                     <div class="form-group owner">
-                        <label for="owner">Owner</label>
-                        <input type="text" class="form-control" id="owner">
+                        <label for="owner">First Name</label>
+                        <input type="text" name="first_name" class="form-control" id="first_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="owner">Last Name</label>
+                        <input type="text" name="last_name" class="form-control" id="last_name">
+                    </div>
+                    <div class="form-group owner">
+                        <label for="owner">Email</label>
+                        <input type="email" name="email" class="form-control" id="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="owner">phone</label>
+                        <input type="text" name="phone" class="form-control" id="phone">
+                    </div>
+                    <div class="form-group owner">
+                        <label for="owner">Address</label>
+                        <input type="text" name="address" class="form-control" id="address">
+                    </div>
+                    <div class="form-group ">
+                        <label for="owner">Zip</label>
+                        <input type="text" name="Zip" class="form-control" id="zip">
+                    </div>
+                    <div class="form-group owner">
+                        <label for="owner">Card Name</label>
+                        <input type="text" name="card_name" class="form-control" id="owner">
                     </div>
                     <div class="form-group CVV">
                         <label for="cvv">CVV</label>
-                        <input type="text" class="form-control" id="cvv">
+                        <input type="text" name="card_cvv" class="form-control" id="cvv">
                     </div>
                     <div class="form-group" id="card-number-field">
                         <label for="cardNumber">Card Number</label>
-                        <input type="text" class="form-control" id="cardNumber">
+                        <input type="text" name="card_number" class="form-control" id="cardNumber">
                     </div>
                     <div class="form-group" id="expiration-date">
                         <label>Expiration Date</label>
-                        <select>
+                        <select name="card_exp_month" id="card_exp_month">
                             <option value="01">January</option>
                             <option value="02">February </option>
                             <option value="03">March</option>
@@ -53,13 +103,13 @@
                             <option value="11">November</option>
                             <option value="12">December</option>
                         </select>
-                        <select>
-                            <option value="16"> 2016</option>
-                            <option value="17"> 2017</option>
-                            <option value="18"> 2018</option>
-                            <option value="19"> 2019</option>
-                            <option value="20"> 2020</option>
-                            <option value="21"> 2021</option>
+                        <select name="card_exp_year" id="card_exp_year">
+                            <option value="2024"> 2024</option>
+                            <option value="2025"> 2025</option>
+                            <option value="2026"> 2026</option>
+                            <option value="2027"> 2027</option>
+                            <option value="2028"> 2028</option>
+                            <option value="2029"> 2029</option>
                         </select>
                     </div>
                     <div class="form-group" id="credit_cards">
@@ -68,7 +118,8 @@
                         <img src="{{ asset('payment-assets/images/amex.jpg') }}" id="amex">
                     </div>
                     <div class="form-group" id="pay-now">
-                        <button type="submit" class="btn btn-default" id="confirm-purchase">Confirm</button>
+                        <input id="nonce" name="payment_method_nonce" type="hidden" />
+                        <button type="submit" class="btn btn-default" id="card-button">Confirm</button>
                     </div>
                 </form>
             </div>
@@ -111,6 +162,38 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="{{ asset('payment-assets/js/jquery.payform.min.js') }}" charset="utf-8"></script>
     <script src="{{ asset('payment-assets/js/script.js') }}"></script>
+
+    @php if($invoice->paymentGateway->merchant->name == 'Strip'){ @endphp
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script> 
+    <script type="text/javascript">
+        const cardButton = document.getElementById('card-button');
+        console.log($('form').data('stripe-publishable-key'));
+
+        cardButton.addEventListener('click', async () => {
+            Stripe.setPublishableKey($('form').data('stripe-publishable-key'));
+                Stripe.createToken({
+                        number: $('#cardNumber').val(),
+                        cvc: $('#cvv').val(),
+                        exp_month: $('#card_exp_month').val(),
+                        exp_year: $('#card_exp_year').val()
+                }, stripeResponseHandler);
+		});
+
+        function stripeResponseHandler(status, response) {
+            if (response.error) {
+                $('input[name="payment_method_nonce"]').after('<div class="text-center text-danger fontbold">'+response.error.message+'</div>');
+                console.log(response.error.message);
+            } else {
+                /* token contains id, last4, and card type */
+                var token = response['id'];
+                $('input[name="stripeToken"]').val(token);
+                console.log(token);
+                document.getElementById('order_form').submit();
+            }
+		}
+    </script>
+    @php } @endphp           
+
 </body>
 
 </html>

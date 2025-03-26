@@ -99,6 +99,7 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')-
 
         //Paymnet Transction 
         Route::resource('payments','PaymentController');
+        Route::post('/create_transction',[PaymentController::class, 'make_payment_transaction'])->name('makeTransaction');
 
         Route::get('/profile',[ProfileController::class,'index'])->name('profile');
         Route::put('/profile-update',[ProfileController::class,'update'])->name('profile.update');
