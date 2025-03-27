@@ -11,35 +11,35 @@ $(document).ready(function() {
 
         if(merchantType == 'Authorize'){  
             $('#authorize').show(); 
-            $('#strip').hide(); 
+            $('#stripe').hide(); 
             $('#payPal').hide();
             $('#braintree').hide();
             $('#square').hide();
             $('#2checkout').hide(); 
-        } else if(merchantType == 'Strip'){  
+        } else if(merchantType == 'Stripe'){  
             $('#authorize').hide(); 
-            $('#strip').show(); 
+            $('#stripe').show(); 
             $('#payPal').hide();
             $('#braintree').hide();
             $('#square').hide();
             $('#2checkout').hide(); 
         } else if(merchantType == 'PayPal'){
             $('#authorize').hide(); 
-            $('#strip').hide(); 
+            $('#stripe').hide(); 
             $('#payPal').show();
             $('#braintree').hide();
             $('#square').hide();
             $('#2checkout').hide(); 
         } else if(merchantType == 'Braintree'){
             $('#authorize').hide(); 
-            $('#strip').hide(); 
+            $('#stripe').hide(); 
             $('#payPal').hide();
             $('#braintree').show();
             $('#square').hide();
             $('#2checkout').hide(); 
         } else if(merchantType == 'Square'){
             $('#authorize').hide(); 
-            $('#strip').hide(); 
+            $('#stripe').hide(); 
             $('#payPal').hide();
             $('#braintree').hide();
             $('#square').show();
@@ -47,7 +47,7 @@ $(document).ready(function() {
         } else {
             console.log('new');
             $('#authorize').hide(); 
-            $('#strip').hide(); 
+            $('#stripe').hide(); 
             $('#payPal').hide();
             $('#braintree').hide();
             $('#square').hide();

@@ -99,6 +99,7 @@ class PaymentController extends Controller
         $paymentGateway = $invoiceData->paymentGateway->merchant->name;
         $client = $invoiceData->client;
 
+        //dd($request->nonce);
         $paymentProcessData = array(
             "invoiceNumber" => $request->invoice_number,
             "first_name" => $request->first_name,
@@ -112,8 +113,11 @@ class PaymentController extends Controller
             "card_exp_year" => $request->card_exp_year,
             "card_cvv" => $request->card_cvv,
             "invoice_data" => $invoiceData,
-            "stripeToken" => $request->stripeToken
+            "stripeToken" => $request->stripeToken,
+            "nonce" => $request->nonce
         );
+
+        //dd($paymentProcessData);
 
         switch ($paymentGateway) {
             case 'Authorize':
@@ -125,8 +129,8 @@ class PaymentController extends Controller
             case 'paypal':
                 // Process PayPal payment
                 break;
-            case 'authorize':
-                // Process Authorize.net payment
+            case 'Square':
+                $paymentStatus = processSquarePayment($paymentProcessData);
                 break;
             default:
                 // Invalid gateway

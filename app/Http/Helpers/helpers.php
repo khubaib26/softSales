@@ -3,7 +3,14 @@
 use App\Models\PaymentGateway;
 use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
-//use Stripe;
+
+//Square Library
+use Square\SquareClient;
+use Square\Exceptions\ApiException;
+use Square\Models\CreatePaymentRequest;
+use Stevebauman\Location\Facades\Location;
+use Square\Models\Money;
+use Square\Environment;
 
 
  // convert 1000 to K
@@ -233,6 +240,104 @@ function processStripePayment($data){
     
     
     //return $statusMsg;
+}
+
+// Square Payment Function
+function processSquarePayment($data){
+    //dd('Square');
+    $gatewayId = $data['invoice_data']['gateway_id'];
+    
+    //Get Merchant Information
+    $paymentMethod = PaymentGateway::where(['status' => 1, 'id' =>$gatewayId])->first();
+
+    if($paymentMethod->environment == 1){
+         //Production
+         $applicationId = $paymentMethod->square_production_application_id;
+         $accessToken = $paymentMethod->square_production_access_token;
+         $locationId = $paymentMethod->square_production_Location_id;
+    }else{
+        //SandBox
+        $applicationId = $paymentMethod->square_sandbox_application_id;
+        $accessToken = $paymentMethod->square_sandbox_access_token;
+        $locationId = $paymentMethod->square_sandbox_Location_id; 
+    }
+
+    $invoice_amount = $data['amount'];
+    $nonce = $data['nonce'];
+
+    $client = new SquareClient([
+        'accessToken' => $accessToken,
+        'environment' => ($paymentMethod->environment == 1) ? Environment::PRODUCTION : Environment::SANDBOX,
+    ]);
+
+    //dd($client);
+
+    // Set amount money
+    $amount_money = new Money();
+    $amount_money->setAmount($invoice_amount*100);
+    $amount_money->setCurrency('USD');
+
+    //Set Apliation Fee mondy (Optional)
+    //$app_fee_money = new Money();
+    //$app_fee_money->setAmount(10); // Amount in cents for application fee
+    //$app_fee_money->setCurrency('USD');
+
+    //Create Payment Request body
+    $body = new CreatePaymentRequest($nonce, uniqid());
+    $body->setAmountMoney($amount_money);
+    // $body->setAppFeeMoney($app_fee_money); // Optional: Set Application fee money
+    $body->setAutocomplete(true); //complete payment automatically
+
+    // Optioanl : Set Custome ID, Location ID, reference ID, and Note
+    $body->setLocationId($locationId);
+    //$body->setReferenceId('12345678'); //Set Invoice Number
+    //$body->setNote('Some description'); //Set Invoice Desctiption
+    //dd($body);
+    try {
+        // Send payment request to Square API
+        $api_response = $client->getPaymentsApi()->createPayment($body);
+        
+        dd($api_response);
+        // Handle API response
+        
+        if ($api_response->isSuccess()){
+            $result = $api_response->getResult();
+            $resp = json_encode($result);
+            $resp_dec = json_decode($resp, true);
+            //echo 'ID: '.$transid = $resp_dec["payment"]["card_details"]["card"]["card_brand"];
+            // dd($result->getPayment()->getCard());
+            // //dd($result->getPayment()->getStatus());
+            // dd($result->getPayment()->getStatus());
+            // dd($result->getPayment()->getId());
+            return response()->json([
+                'success' => true, 
+                'msg' => 'Payment has been Successfully done!',
+                'payment' => $result
+            ]);
+
+        } else {
+
+            $errors = $api_response->getErrors();
+            $reason = "";
+            foreach ($errors as $error) {
+                $reason .= $error->getDetail().' ';
+            }
+            
+            return response()->json([
+                'success' => false, 
+                'msg' => 'Payment failed!',
+                'errors' => $errors
+            ]);
+        }
+    } catch (ApiException $e) {
+        //Handle API exception
+        return response()->json([
+            'success' => false, 
+            'msg' => $e->getMessage()
+        ], 500);
+    }
+
+
 }
 
 

@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('payment-assets/css/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('payment-assets/css/demo.css') }}">
+    @php
+        if($invoice->paymentGateway->merchant->name == 'Square'){
+            if($invoice->paymentGateway->environment == 1){
+    @endphp
+    <script src="https://web.squarecdn.com/v1/square.js"></script>            
+    @php }else{ @endphp
+    <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>                      
+    @php }}@endphp
 </head>
 
 <body>
@@ -44,12 +52,14 @@
                     $stripeData = '';
                 }
                 @endphp
+                <!--   -->
                 <form id="order_form" method="post" action="{{ route('admin.makeTransaction')}}" {{ $stripeData }}>
                 @csrf
                 @method('post')
                 <input type="hidden" name="invoice_number" value="{{$invoice->invoice_number}}">
                 <input type="hidden" name="amount" value="{{$invoice->amount}}">
                 <input type="hidden" name="stripeToken" value=""/>
+                <input type="hidden" name="nonce" value="">
 
                     <div class="form-group owner">
                         <label for="owner">First Name</label>
@@ -75,6 +85,13 @@
                         <label for="owner">Zip</label>
                         <input type="text" name="Zip" class="form-control" id="zip">
                     </div>
+                    @php if($invoice->paymentGateway->merchant->name == 'Square'){ @endphp
+                    
+                    <div id="payment-form">
+						<div id="payment-status-container"></div>
+						<div id="card-container"></div>
+					</div>
+                    @php }else{ @endphp
                     <div class="form-group owner">
                         <label for="owner">Card Name</label>
                         <input type="text" name="card_name" class="form-control" id="owner">
@@ -117,6 +134,7 @@
                         <img src="{{ asset('payment-assets/images/mastercard.jpg') }}" id="mastercard">
                         <img src="{{ asset('payment-assets/images/amex.jpg') }}" id="amex">
                     </div>
+                    @php } @endphp
                     <div class="form-group" id="pay-now">
                         <input id="nonce" name="payment_method_nonce" type="hidden" />
                         <button type="submit" class="btn btn-default" id="card-button">Confirm</button>
@@ -163,7 +181,7 @@
     <script src="{{ asset('payment-assets/js/jquery.payform.min.js') }}" charset="utf-8"></script>
     <script src="{{ asset('payment-assets/js/script.js') }}"></script>
 
-    @php if($invoice->paymentGateway->merchant->name == 'Strip'){ @endphp
+    @php if($invoice->paymentGateway->merchant->name == 'Stripe'){ @endphp
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script> 
     <script type="text/javascript">
         const cardButton = document.getElementById('card-button');
@@ -192,7 +210,49 @@
             }
 		}
     </script>
-    @php } @endphp           
+    @php } @endphp 
+    
+    @php if($invoice->paymentGateway->merchant->name == 'Square'){ @endphp
+        <script type="module">
+                @php if($invoice->paymentGateway->environment == 1){ @endphp
+				const payments = Square.payments('{{$invoice->paymentGateway->square_production_application_id}}', '{{$invoice->paymentGateway->square_production_Location_id}}');
+                @php }else{ @endphp
+                const payments = Square.payments('{{$invoice->paymentGateway->square_sandbox_application_id}}', '{{$invoice->paymentGateway->square_sandbox_location_id}}');
+                @php } @endphp    
+				const card = await payments.card();
+				await card.attach('#card-container');
+
+				const cardButton = document.getElementById('card-button');
+				cardButton.addEventListener('click', async () => {
+				const statusContainer = document.getElementById('payment-status-container');
+
+				try {
+					const result = await card.tokenize();
+
+					if (result.status === 'OK') {
+						console.log(`Payment token is ${result.token}`);
+						$('input[name="nonce"]').val(result.token);
+						
+						statusContainer.innerHTML = "Payment Successful";
+                        document.getElementById('order_form').submit();
+					} else {
+					    //location.reload();
+						let errorMessage = `Tokenization failed with status: ${result.status}`;
+						if (result.errors) {
+							errorMessage += ` and errors: ${JSON.stringify(
+							result.errors
+							)}`;
+						}
+						throw new Error(errorMessage);
+					}
+				} catch (e) {
+				    //location.reload();
+					console.error(e);
+					statusContainer.innerHTML = "Payment Failed";
+				}
+				});
+			</script>
+    @php } @endphp 
 
 </body>
 
