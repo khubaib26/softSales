@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+//use App\Helpers\MerchantHelper;
+
+
 
 class PaymentController extends Controller
 {
@@ -131,6 +134,7 @@ class PaymentController extends Controller
                 break;
             case 'Square':
                 $paymentStatus = processSquarePayment($paymentProcessData);
+                //$paymentStatus = MerchantHelper::processSquarePayment($paymentProcessData);
                 break;
             default:
                 // Invalid gateway
@@ -138,4 +142,6 @@ class PaymentController extends Controller
 
         dd($paymentStatus);
     }
+
+    
 }

@@ -3,14 +3,14 @@
 use App\Models\PaymentGateway;
 use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
-
+use Stevebauman\Location\Facades\Location;
 //Square Library
 use Square\SquareClient;
 use Square\Exceptions\ApiException;
 use Square\Models\CreatePaymentRequest;
-use Stevebauman\Location\Facades\Location;
 use Square\Models\Money;
 use Square\Environment;
+
 
 
  // convert 1000 to K
@@ -244,6 +244,8 @@ function processStripePayment($data){
 
 // Square Payment Function
 function processSquarePayment($data){
+    //var_dump($data);
+
     //dd('Square');
     $gatewayId = $data['invoice_data']['gateway_id'];
     
@@ -265,17 +267,18 @@ function processSquarePayment($data){
     $invoice_amount = $data['amount'];
     $nonce = $data['nonce'];
 
+
     $client = new SquareClient([
         'accessToken' => $accessToken,
-        'environment' => ($paymentMethod->environment == 1) ? Environment::PRODUCTION : Environment::SANDBOX,
+        'environment' => ($paymentMethod->environment == 1) ? Environment::PRODUCTION : Environment::SANDBOX
     ]);
-
-    //dd($client);
 
     // Set amount money
     $amount_money = new Money();
     $amount_money->setAmount($invoice_amount*100);
     $amount_money->setCurrency('USD');
+
+    //dd($nonce);
 
     //Set Apliation Fee mondy (Optional)
     //$app_fee_money = new Money();
@@ -297,7 +300,7 @@ function processSquarePayment($data){
         // Send payment request to Square API
         $api_response = $client->getPaymentsApi()->createPayment($body);
         
-        dd($api_response);
+        //dd($api_response);
         // Handle API response
         
         if ($api_response->isSuccess()){

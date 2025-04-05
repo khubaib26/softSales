@@ -5,17 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Credit Card Validation Demo</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('payment-assets/css/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('payment-assets/css/demo.css') }}">
     @php
         if($invoice->paymentGateway->merchant->name == 'Square'){
             if($invoice->paymentGateway->environment == 1){
     @endphp
-    <script src="https://web.squarecdn.com/v1/square.js"></script>            
+    <script src="//web.squarecdn.com/v1/square.js"></script>            
     @php }else{ @endphp
-    <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>                      
+    <script src="//sandbox.web.squarecdn.com/v1/square.js"></script>                      
     @php }}@endphp
 </head>
 
@@ -53,7 +53,7 @@
                 }
                 @endphp
                 <!--   -->
-                <form id="order_form" method="post" action="{{ route('admin.makeTransaction')}}" {{ $stripeData }}>
+                <form id="order_form" method="post" action="{{ route('admin.makeTransaction')}}"   {{ $stripeData }}>
                 @csrf
                 @method('post')
                 <input type="hidden" name="invoice_number" value="{{$invoice->invoice_number}}">
@@ -176,13 +176,14 @@
             </div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="{{ asset('payment-assets/js/jquery.payform.min.js') }}" charset="utf-8"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{{ asset('payment-assets/js/jquery.payform.min.js') }}"></script>
     <script src="{{ asset('payment-assets/js/script.js') }}"></script>
+   
 
     @php if($invoice->paymentGateway->merchant->name == 'Stripe'){ @endphp
-    <script type="text/javascript" src="https://js.stripe.com/v2/"></script> 
+    <script type="text/javascript" src="//js.stripe.com/v2/"></script> 
     <script type="text/javascript">
         const cardButton = document.getElementById('card-button');
         console.log($('form').data('stripe-publishable-key'));
@@ -224,17 +225,19 @@
 
 				const cardButton = document.getElementById('card-button');
 				cardButton.addEventListener('click', async () => {
-				const statusContainer = document.getElementById('payment-status-container');
 
+				const statusContainer = document.getElementById('payment-status-container');
+                    
 				try {
 					const result = await card.tokenize();
-
+                    console.log('cxm...'+result);
 					if (result.status === 'OK') {
 						console.log(`Payment token is ${result.token}`);
 						$('input[name="nonce"]').val(result.token);
 						
 						statusContainer.innerHTML = "Payment Successful";
-                        document.getElementById('order_form').submit();
+                        console.log('CXM');
+                        //document.getElementById('order_form').submit();
 					} else {
 					    //location.reload();
 						let errorMessage = `Tokenization failed with status: ${result.status}`;
@@ -247,9 +250,11 @@
 					}
 				} catch (e) {
 				    //location.reload();
+                    console.log('cxm error');
 					console.error(e);
 					statusContainer.innerHTML = "Payment Failed";
 				}
+                return false;
 				});
 			</script>
     @php } @endphp 
