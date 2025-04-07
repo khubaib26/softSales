@@ -223,40 +223,41 @@
 				const card = await payments.card();
 				await card.attach('#card-container');
 
-				const cardButton = document.getElementById('card-button');
-				cardButton.addEventListener('click', async () => {
-
-				const statusContainer = document.getElementById('payment-status-container');
-                    
-				try {
-					const result = await card.tokenize();
-                    console.log('cxm...'+result);
-					if (result.status === 'OK') {
-						console.log(`Payment token is ${result.token}`);
-						$('input[name="nonce"]').val(result.token);
-						
-						statusContainer.innerHTML = "Payment Successful";
-                        console.log('CXM');
-                        //document.getElementById('order_form').submit();
-					} else {
-					    //location.reload();
-						let errorMessage = `Tokenization failed with status: ${result.status}`;
-						if (result.errors) {
-							errorMessage += ` and errors: ${JSON.stringify(
-							result.errors
-							)}`;
-						}
-						throw new Error(errorMessage);
-					}
-				} catch (e) {
-				    //location.reload();
-                    console.log('cxm error');
-					console.error(e);
-					statusContainer.innerHTML = "Payment Failed";
-				}
-                return false;
+                // const cardButton = document.getElementById('card-button');
+				// cardButton.addEventListener('click', async () => {
+                
+                document.getElementById('order_form').addEventListener('submit', async function(e) {
+                    e.preventDefault(); // Prevent default form submission    
+                    const statusContainer = document.getElementById('payment-status-container');
+                    try {
+                        const result = await card.tokenize();
+                        console.log('cxm...'+result);
+                        if (result.status === 'OK') {
+                            console.log(`Payment token is ${result.token}`);
+                            $('input[name="nonce"]').val(result.token);
+                            
+                            statusContainer.innerHTML = "Payment Successful";
+                            console.log('CXM');
+                            this.submit();
+                            //document.getElementById('order_form').submit();
+                        } else {
+                            //location.reload();
+                            let errorMessage = `Tokenization failed with status: ${result.status}`;
+                            if (result.errors) {
+                                errorMessage += ` and errors: ${JSON.stringify(
+                                result.errors
+                                )}`;
+                            }
+                            throw new Error(errorMessage);
+                        }
+                    } catch (e) {
+                        //location.reload();
+                        console.log('cxm error');
+                        console.error(e);
+                        statusContainer.innerHTML = "Payment Failed";
+                    }
 				});
-			</script>
+		</script>
     @php } @endphp 
 
 </body>
