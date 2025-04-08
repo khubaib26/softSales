@@ -244,9 +244,7 @@ function processStripePayment($data){
 
 // Square Payment Function
 function processSquarePayment($data){
-    //var_dump($data);
 
-    //dd('Square');
     $gatewayId = $data['invoice_data']['gateway_id'];
     
     //Get Merchant Information

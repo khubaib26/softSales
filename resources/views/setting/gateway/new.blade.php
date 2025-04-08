@@ -128,6 +128,34 @@
                                     <input id="role_name" type="text" name="square_production_Location_id" value="{{ old('name') }}" placeholder="Enter Production Location ID" class="form-control" />
                                 </div>
                             </div>
+                            <div class="row merchantBox" id="braintree" style="display:none;">
+                                <h5>Braintree</h5>
+                                <hr>
+                                <div class="col-lg-4">
+                                    <label for="role_name" class="mt-2">Sandbox Merchant ID</label>
+                                    <input id="role_name" type="text" name="test_braintree_merchantId" value="{{ old('name') }}" placeholder="Enter Sandbox Merchant ID" class="form-control" />
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="role_name" class="mt-2">Sandbox Public Key</label>
+                                    <input id="role_name" type="text" name="test_braintree_publicKey" value="{{ old('name') }}" placeholder="Enter Sandbox Public Key" class="form-control" />
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="role_name" class="mt-2">Sandbox Private Key</label>
+                                    <input id="role_name" type="text" name="test_braintree_privateKey" value="{{ old('name') }}" placeholder="Enter Sandbox Private Key" class="form-control" />
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="role_name" class="mt-2">Production Merchant ID</label>
+                                    <input id="role_name" type="text" name="live_braintree_merchantId" value="{{ old('name') }}" placeholder="Enter Production Merchant ID" class="form-control" />
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="role_name" class="mt-2">Production Public Key</label>
+                                    <input id="role_name" type="text" name="live_braintree_publicKey" value="{{ old('name') }}" placeholder="Enter Production Public Key" class="form-control" />
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="role_name" class="mt-2">Production Private Key</label>
+                                    <input id="role_name" type="text" name="live_braintree_privateKey" value="{{ old('name') }}" placeholder="Enter ProductionPrivate Key" class="form-control" />
+                                </div>
+                            </div>
                             <?php /*?>
                             <div class="row merchantBox" id="payPal" style="display:none;">
                                 <h5>PayPal</h5>
@@ -141,18 +169,7 @@
                                     <input id="role_name" type="number" name="limit" value="{{ old('name') }}" placeholder="Enter limit" class="form-control" />
                                 </div>
                             </div>
-                            <div class="row merchantBox" id="braintree" style="display:none;">
-                                <h5>Braintree</h5>
-                                <hr>
-                                <div class="col-lg-6">
-                                    <label for="role_name" class="mt-2">Currency</label>
-                                    <input id="role_name" type="text" name="currency" value="{{ old('name') }}" placeholder="Enter Currency" class="form-control" />
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="role_name" class="mt-2">Limit</label>
-                                    <input id="role_name" type="number" name="limit" value="{{ old('name') }}" placeholder="Enter limit" class="form-control" />
-                                </div>
-                            </div>
+                            
                             
                             <div class="row merchantBox" id="2checkout" style="display:none;">
                                 <h5>2 Checkout</h5>
