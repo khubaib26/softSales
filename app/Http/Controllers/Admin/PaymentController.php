@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use Braintree\Gateway;
 //use App\Helpers\MerchantHelper;
 
 
@@ -51,10 +52,35 @@ class PaymentController extends Controller
     public function show($id)
     {
         $invoice = Invoice::where(['invoice_number'=>$id])->first();
+        
+        if($invoice->paymentGateway->merchant->name == "Braintree"){
+            if($invoice->paymentGateway->environment == 1){
+                //Production
+                $merchantId = $invoice->paymentGateway->live_braintree_merchantId;
+                $publicKey = $invoice->paymentGateway->live_braintree_publicKey;
+                $privateKey = $invoice->paymentGateway->live_braintree_privateKey;
+                $environment = "production";
+           }else{
+               //SandBox
+               $merchantId = $invoice->paymentGateway->test_braintree_merchantId;
+               $publicKey = $invoice->paymentGateway->test_braintree_publicKey;
+               $privateKey = $invoice->paymentGateway->test_braintree_privateKey;
+               $environment = "sandbox";
+           }
 
-        //$paymentGateway = $invoice->paymentGateway->live_stripe_publishable_key;
-        //dd($paymentGateway);
-        return view('setting.payment.index',['invoice'=>$invoice]);
+            $gateway = new Gateway([
+                'environment' => $environment,
+                'merchantId' => $merchantId,
+                'publicKey' => $publicKey,
+                'privateKey' => $privateKey,
+            ]);
+
+            $clientToken = $gateway->clientToken()->generate();
+        }else{
+            $clientToken = '';
+        }
+       
+        return view('setting.payment.index',['invoice'=>$invoice, 'clientToken'=>$clientToken]);
     }
 
     /**
@@ -117,10 +143,9 @@ class PaymentController extends Controller
             "card_cvv" => $request->card_cvv,
             "invoice_data" => $invoiceData,
             "stripeToken" => $request->stripeToken,
-            "nonce" => $request->nonce
+            "nonce" => $request->nonce,
+            'bt_nonce' => $request->bt_payment_method_nonce
         );
-
-        //dd($paymentProcessData);
 
         switch ($paymentGateway) {
             case 'Authorize':
@@ -134,8 +159,10 @@ class PaymentController extends Controller
                 break;
             case 'Square':
                 $paymentStatus = processSquarePayment($paymentProcessData);
-                //$paymentStatus = MerchantHelper::processSquarePayment($paymentProcessData);
                 break;
+            case 'Braintree':
+                $paymentStatus = processBraintreePayment($paymentProcessData);
+                break;    
             default:
                 // Invalid gateway
         }

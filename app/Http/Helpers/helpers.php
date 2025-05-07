@@ -10,11 +10,11 @@ use Square\Exceptions\ApiException;
 use Square\Models\CreatePaymentRequest;
 use Square\Models\Money;
 use Square\Environment;
+//Braintree
+use Braintree\Gateway;
 
-
-
- // convert 1000 to K
- function thousand_format($number) {
+// convert 1000 to K
+function thousand_format($number) {
     $number = (int) preg_replace('/[^0-9]/', '', $number);
     if ($number >= 1000) {
         $rn = round($number);
@@ -339,6 +339,62 @@ function processSquarePayment($data){
     }
 
 
+}
+
+// Braintree Payment Function
+function processBraintreePayment($data){
+    
+    $gatewayId = $data['invoice_data']['gateway_id'];
+    
+    //Get Merchant Information
+    $paymentMethod = PaymentGateway::where(['status' => 1, 'id' =>$gatewayId])->first();
+
+    if($paymentMethod->environment == 1){
+         //Production
+         $merchantId =$paymentMethod->live_braintree_merchantId;
+         $publicKey =$paymentMethod->live_braintree_publicKey;
+         $privateKey =$paymentMethod->live_braintree_privateKey;
+         $environment = "production";
+    }else{
+        //SandBox
+        $merchantId =$paymentMethod->test_braintree_merchantId;
+        $publicKey =$paymentMethod->test_braintree_publicKey;
+        $privateKey =$paymentMethod->test_braintree_privateKey;
+        $environment = "sandbox";
+    }
+
+    $gateway = new Gateway([
+        'environment' => $environment,
+        'merchantId' => $merchantId,
+        'publicKey' => $publicKey,
+        'privateKey' => $privateKey,
+    ]);
+    
+    
+    $amount = $data['amount'];
+
+    $result = $gateway->transaction()->sale([
+        'amount' => $amount,
+        'paymentMethodNonce' => $data['bt_nonce'],
+        'options' => ['submitForSettlement' => true]
+    ]);
+
+        if ($result->success) {
+            // $invoice->status = 'paid';
+            // $invoice->transaction_id = $result->transaction->id;
+            // $invoice->save();
+            return response()->json([
+                'success' => true, 
+                'msg' => 'Payment has been Successfully done!',
+                'payment' => $result
+            ]);
+        } else {
+            return response()->json([
+                'success' => false, 
+                'msg' => 'Payment failed!',
+                'errors' => $result->message
+            ]);    
+        }    
 }
 
 

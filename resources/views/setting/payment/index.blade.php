@@ -16,7 +16,7 @@
     <script src="//web.squarecdn.com/v1/square.js"></script>            
     @php }else{ @endphp
     <script src="//sandbox.web.squarecdn.com/v1/square.js"></script>                      
-    @php }}@endphp
+    @php }} @endphp
 </head>
 
 <body>
@@ -86,11 +86,12 @@
                         <input type="text" name="Zip" class="form-control" id="zip">
                     </div>
                     @php if($invoice->paymentGateway->merchant->name == 'Square'){ @endphp
-                    
                     <div id="payment-form">
 						<div id="payment-status-container"></div>
 						<div id="card-container"></div>
 					</div>
+                    @php } else if($invoice->paymentGateway->merchant->name == 'Braintree'){ @endphp    
+                        <div id="bt-dropin"></div>
                     @php }else{ @endphp
                     <div class="form-group owner">
                         <label for="owner">Card Name</label>
@@ -258,6 +259,40 @@
                     }
 				});
 		</script>
+    @php } @endphp 
+
+    @php if($invoice->paymentGateway->merchant->name == 'Braintree'){ @endphp
+        <script src="https://js.braintreegateway.com/web/dropin/1.39.1/js/dropin.min.js"></script>
+        
+        <script>
+        var form = document.querySelector('#order_form');
+        var submit = document.querySelector('#card-button');
+
+        braintree.dropin.create({
+            authorization: '{{ $clientToken }}',
+            container: '#bt-dropin'
+        }, function (createErr, instance) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                instance.requestPaymentMethod(function (err, payload) {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+
+                    // Add the nonce to the form and submit
+                    var nonceInput = document.createElement('input');
+                    nonceInput.type = 'hidden';
+                    nonceInput.name = 'bt_payment_method_nonce';
+                    nonceInput.value = payload.nonce;
+                    form.appendChild(nonceInput);
+
+                    form.submit();
+                });
+            });
+        });
+    </script>
     @php } @endphp 
 
 </body>
