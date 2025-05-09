@@ -59,6 +59,9 @@ function conversion_rate($convertedLead, $totalLead){
 }
 
 
+
+//Payment Method functions
+//------------------------------------- 
 // AuthorizeNet payment Function
 function processAuthorizeNetPayment($data){
     
