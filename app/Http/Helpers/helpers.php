@@ -155,12 +155,27 @@ function processAuthorizeNetPayment($data){
                 $msgCode = $tresponse->getMessages()[0]->getCode();
                 $statusMsg = $tresponse->getMessages()[0]->getDescription();
                 $status = 'success'; 
+
+                $paymentResponse = [
+                    'transaction_reference' => $transactionId,
+                    'success' => true, 
+                    'response_code' => $responseCode,
+                    'response_text' => $statusMsg 
+                ];
+
             } else {
                 if ($tresponse->getErrors() != null) {
                     $errorCode = $tresponse->getErrors()[0]->getErrorCode();
                     $statusMsg =  $tresponse->getErrors()[0]->getErrorText();
                     $responseCode = $tresponse->getErrors()[0]->getErrorCode();
-                    $status = 'Error';    
+                    $status = 'Error';  
+                    
+                    $paymentResponse = [
+                        'transaction_reference' => '',
+                        'success' => false,
+                        'response_code' => $responseCode,
+                        'response_text' => $statusMsg     
+                    ];
                 }
             }
         }else{
@@ -169,21 +184,38 @@ function processAuthorizeNetPayment($data){
                 $errorCode = $tresponse->getErrors()[0]->getErrorCode();
                 $statusMsg =  $tresponse->getErrors()[0]->getErrorText();
                 $responseCode = $tresponse->getErrors()[0]->getErrorCode();
-                $status = 'Error';    
+                $status = 'Error';
+                
+                $paymentResponse = [
+                    'transaction_reference' => '',
+                    'success' => false,
+                    'response_code' => $responseCode,
+                    'response_text' => $statusMsg 
+                ];
             }else{
                 $errorCode = $response->getMessages()->getMessage()[0]->getCode();
                 $statusMsg = $response->getMessages()->getMessage()[0]->getText(); 
-                $status = 'Error';        
+                $status = 'Error'; 
+                
+                $paymentResponse = [
+                    'transaction_reference' => '',
+                    'success' => false,
+                    'response_code' => $responseCode,
+                    'response_text' => $statusMsg 
+                ];
             }
         }   
     }else{
         $statusMsg =  "No response returned";
+
+        $paymentResponse = [
+            'transaction_reference' => '',
+            'success' => false,
+            'response_code' => '',
+            'response_text' => $statusMsg 
+        ];
     }
-
-
-    return $statusMsg;
-    
-    //return $data;
+    return $paymentResponse;
 }
 
 // Stripe Payment Function
@@ -216,33 +248,57 @@ function processStripePayment($data){
         ]);
         //dd($paymentResult);
         if($paymentResult['status'] == 'succeeded') {
-            return response()->json([
-                'success' => true, 
-                'msg' => 'Payment has been Successfully done! ',
-                'payment' => $paymentResult
-            ]);
+
+            $paymentResponse = [
+                'transaction_reference' => $paymentResult['id'],
+                'success' => true,
+                'response_code' => '1',
+                'response_text' => 'Payment has been Successfully done!' 
+            ];
+
+            // dd($paymentResult);
+            // return response()->json([
+            //     'success' => true, 
+            //     'msg' => 'Payment has been Successfully done!',
+            //     'payment' => $paymentResult
+            // ]);
         }
     } catch (\Stripe\Exception\CardException $e) {
             $paymentResult = $e->getMessage();
-        
-            return response()->json([
-                'success' => false, 
-                'msg' => 'Payment Fail!',
-                'payment' => $paymentResult
-            ]);
+            
+            $paymentResponse = [
+                'transaction_reference' => '',
+                'success' => false,
+                'response_code' => '0',
+                'response_text' => 'Payment Fail!' 
+            ];
+            // return response()->json([
+            //     'success' => false, 
+            //     'msg' => 'Payment Fail!',
+            //     'payment' => $paymentResult
+            // ]);
+
+
     } catch (\Exception $e) {
         // Handle other errors
         \Log::error($e);
             $paymentResult = $e->getMessage();
-            return response()->json([
-                'success' => false, 
-                'msg' => 'Payment Fail!',
-                'payment' => $paymentResult
-            ]);
+            
+            $paymentResponse = [
+                'transaction_reference' => '',
+                'success' => false,
+                'response_code' => '0',
+                'response_text' => 'Payment Fail!' 
+            ];
+
+            // return response()->json([
+            //     'success' => false, 
+            //     'msg' => 'Payment Fail!',
+            //     'payment' => $paymentResult
+            // ]);
     }
     
-    
-    //return $statusMsg;
+    return $paymentResponse;
 }
 
 // Square Payment Function
