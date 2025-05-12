@@ -113,7 +113,8 @@ class InvoiceController extends Controller
             ]);  
             $clientId = $client->id;
         }
-
+        //Str::random(10)
+        //substr(random_int(100000, 999999).time(),0,9)
         $invoice = Invoice::create([
             'invoice_number' => Str::random(10),
             'brand_id' => $brandId,

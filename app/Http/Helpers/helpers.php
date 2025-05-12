@@ -364,16 +364,25 @@ function processSquarePayment($data){
             $result = $api_response->getResult();
             $resp = json_encode($result);
             $resp_dec = json_decode($resp, true);
-            //echo 'ID: '.$transid = $resp_dec["payment"]["card_details"]["card"]["card_brand"];
+            $transId = $result->getPayment()->getId();
+ 
+            //$transid = $resp_dec["payment"]["card_details"]["card"]["card_brand"];
             // dd($result->getPayment()->getCard());
             // //dd($result->getPayment()->getStatus());
             // dd($result->getPayment()->getStatus());
-            // dd($result->getPayment()->getId());
-            return response()->json([
-                'success' => true, 
-                'msg' => 'Payment has been Successfully done!',
-                'payment' => $result
-            ]);
+
+            $paymentResponse = [
+                'transaction_reference' => $transId,
+                'success' => true,
+                'response_code' => '1',
+                'response_text' => 'Payment has been Successfully done!' 
+            ];
+
+            // return response()->json([
+            //     'success' => true, 
+            //     'msg' => 'Payment has been Successfully done!',
+            //     'payment' => $result
+            // ]);
 
         } else {
 
@@ -382,22 +391,36 @@ function processSquarePayment($data){
             foreach ($errors as $error) {
                 $reason .= $error->getDetail().' ';
             }
+
+            $paymentResponse = [
+                'transaction_reference' => '',
+                'success' => false,
+                'response_code' => '0',
+                'response_text' => 'Payment Fail!' 
+            ];
             
-            return response()->json([
-                'success' => false, 
-                'msg' => 'Payment failed!',
-                'errors' => $errors
-            ]);
+            // return response()->json([
+            //     'success' => false, 
+            //     'msg' => 'Payment failed!',
+            //     'errors' => $errors
+            // ]);
         }
     } catch (ApiException $e) {
         //Handle API exception
-        return response()->json([
-            'success' => false, 
-            'msg' => $e->getMessage()
-        ], 500);
+        // return response()->json([
+        //     'success' => false, 
+        //     'msg' => $e->getMessage()
+        // ], 500);
+
+        $paymentResponse = [
+                'transaction_reference' => '',
+                'success' => false,
+                'response_code' => '0',
+                'response_text' => $e->getMessage() 
+        ];
     }
 
-
+    return $paymentResponse;
 }
 
 // Braintree Payment Function
@@ -442,19 +465,34 @@ function processBraintreePayment($data){
             // $invoice->status = 'paid';
             // $invoice->transaction_id = $result->transaction->id;
             // $invoice->save();
-            return response()->json([
-                'success' => true, 
-                'msg' => 'Payment has been Successfully done!',
-                'payment' => $result
-            ]);
-        } else {
-            return response()->json([
-                'success' => false, 
-                'msg' => 'Payment failed!',
-                'errors' => $result->message
-            ]);    
-        }    
-}
 
+            $paymentResponse = [
+                'transaction_reference' => $result->transaction->id,
+                'success' => true,
+                'response_code' => '1',
+                'response_text' => 'Payment has been Successfully done!' 
+            ];
+            
+            // return response()->json([
+            //     'success' => true, 
+            //     'msg' => 'Payment has been Successfully done!',
+            //     'payment' => $result
+            // ]);
+        } else {
+
+            $paymentResponse = [
+                'transaction_reference' => '',
+                'success' => false,
+                'response_code' => '0',
+                'response_text' => 'Payment Fail!' 
+            ];
+            // return response()->json([
+            //     'success' => false, 
+            //     'msg' => 'Payment failed!',
+            //     'errors' => $result->message
+            // ]);    
+        }
+        return $paymentResponse;           
+}
 
 ?>

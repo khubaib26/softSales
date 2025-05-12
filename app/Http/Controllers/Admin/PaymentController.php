@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use App\Models\Payment;
 use Braintree\Gateway;
 //use App\Helpers\MerchantHelper;
 
@@ -167,8 +168,25 @@ class PaymentController extends Controller
                 // Invalid gateway
         }
 
-        dd($paymentStatus);
-    }
+        if($paymentStatus['success'] && $paymentStatus['transaction_reference'] != ''){
+            
+            $payment = Payment::create([
+                'invoice_id' => $invoiceData->id,
+                'brand_id' => $invoiceData->brand_id,
+                'client_id' => $invoiceData->client_id,
+                'user_id'  => $invoiceData->user_id,
+                'gateway_id' => $invoiceData->gateway_id,
+                'amount' => $request->amount,
+                'paid_at' => now(),
+                'transaction_reference' => $paymentStatus['transaction_reference'],
+                'note' => $paymentStatus['response_text'],
+                'payment_status' => $paymentStatus['response_code'],
+            ]);
 
-    
+            return redirect()->back()->withSuccess('Payment Successed !!!');
+
+        }else{
+            return redirect()->back()->withSuccess('Payment Fail !!!');
+        }
+    }    
 }
