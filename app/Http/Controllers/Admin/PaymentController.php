@@ -183,6 +183,9 @@ class PaymentController extends Controller
                 'payment_status' => $paymentStatus['response_code'],
             ]);
 
+            $invoiceData->status = 'paid';
+            $invoiceData->save();
+
             return redirect()->back()->withSuccess('Payment Successed !!!');
 
         }else{
