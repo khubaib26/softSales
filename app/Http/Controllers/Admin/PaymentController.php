@@ -124,72 +124,75 @@ class PaymentController extends Controller
         $invoiceNumber = $request->invoice_number;
 
         $invoiceData = Invoice::where('invoice_number',$invoiceNumber)->first();
-       
         // Get Merchant 
         $paymentGateway = $invoiceData->paymentGateway->merchant->name;
         $client = $invoiceData->client;
 
-        //dd($request->nonce);
-        $paymentProcessData = array(
-            "invoiceNumber" => $request->invoice_number,
-            "first_name" => $request->first_name,
-            "last_name" => $request->last_name,
-            "email" => $request->email,
-            "phone" => $request->phoner,
-            "amount" => $request->amount,
-            "card_name" => $request->card_name,
-            "card_number" => $request->card_number,
-            "card_exp_month" => $request->card_exp_month,
-            "card_exp_year" => $request->card_exp_year,
-            "card_cvv" => $request->card_cvv,
-            "invoice_data" => $invoiceData,
-            "stripeToken" => $request->stripeToken,
-            "nonce" => $request->nonce,
-            'bt_nonce' => $request->bt_payment_method_nonce
-        );
-
-        switch ($paymentGateway) {
-            case 'Authorize':
-                $paymentStatus = processAuthorizeNetPayment($paymentProcessData);
-                break;
-            case 'Stripe':
-                $paymentStatus = processStripePayment($paymentProcessData);
-                break;
-            case 'paypal':
-                // Process PayPal payment
-                break;
-            case 'Square':
-                $paymentStatus = processSquarePayment($paymentProcessData);
-                break;
-            case 'Braintree':
-                $paymentStatus = processBraintreePayment($paymentProcessData);
-                break;    
-            default:
-                // Invalid gateway
-        }
-
-        if($paymentStatus['success'] && $paymentStatus['transaction_reference'] != ''){
-            
-            $payment = Payment::create([
-                'invoice_id' => $invoiceData->id,
-                'brand_id' => $invoiceData->brand_id,
-                'client_id' => $invoiceData->client_id,
-                'user_id'  => $invoiceData->user_id,
-                'gateway_id' => $invoiceData->gateway_id,
-                'amount' => $request->amount,
-                'paid_at' => now(),
-                'transaction_reference' => $paymentStatus['transaction_reference'],
-                'note' => $paymentStatus['response_text'],
-                'payment_status' => $paymentStatus['response_code'],
-            ]);
-
-            $invoiceData->status = 'paid';
-            $invoiceData->save();
-
-            return redirect()->back()->withSuccess('Payment Successed !!!');
-
+        if($invoiceData->status == 'paid'){
+            dd('already paid');
         }else{
-            return redirect()->back()->withSuccess('Payment Fail !!!');
+            //dd($request->nonce);
+            $paymentProcessData = array(
+                "invoiceNumber" => $request->invoice_number,
+                "first_name" => $request->first_name,
+                "last_name" => $request->last_name,
+                "email" => $request->email,
+                "phone" => $request->phoner,
+                "amount" => $request->amount,
+                "card_name" => $request->card_name,
+                "card_number" => $request->card_number,
+                "card_exp_month" => $request->card_exp_month,
+                "card_exp_year" => $request->card_exp_year,
+                "card_cvv" => $request->card_cvv,
+                "invoice_data" => $invoiceData,
+                "stripeToken" => $request->stripeToken,
+                "nonce" => $request->nonce,
+                'bt_nonce' => $request->bt_payment_method_nonce
+            );
+
+            switch ($paymentGateway) {
+                case 'Authorize':
+                    $paymentStatus = processAuthorizeNetPayment($paymentProcessData);
+                    break;
+                case 'Stripe':
+                    $paymentStatus = processStripePayment($paymentProcessData);
+                    break;
+                case 'paypal':
+                    // Process PayPal payment
+                    break;
+                case 'Square':
+                    $paymentStatus = processSquarePayment($paymentProcessData);
+                    break;
+                case 'Braintree':
+                    $paymentStatus = processBraintreePayment($paymentProcessData);
+                    break;    
+                default:
+                    // Invalid gateway
+            }
+
+            if($paymentStatus['success'] && $paymentStatus['transaction_reference'] != ''){
+                
+                $payment = Payment::create([
+                    'invoice_id' => $invoiceData->id,
+                    'brand_id' => $invoiceData->brand_id,
+                    'client_id' => $invoiceData->client_id,
+                    'user_id'  => $invoiceData->user_id,
+                    'gateway_id' => $invoiceData->gateway_id,
+                    'amount' => $request->amount,
+                    'paid_at' => now(),
+                    'transaction_reference' => $paymentStatus['transaction_reference'],
+                    'note' => $paymentStatus['response_text'],
+                    'payment_status' => $paymentStatus['response_code'],
+                ]);
+
+                $invoiceData->status = 'paid';
+                $invoiceData->save();
+
+                return redirect()->back()->withSuccess('Payment Successed !!!');
+
+            }else{
+                return redirect()->back()->withSuccess('Payment Fail !!!');
+            }
         }
     }    
 }

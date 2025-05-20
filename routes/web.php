@@ -11,7 +11,8 @@ use App\Http\Controllers\Admin\{
     PaymentGatewayController,
     ClientController,
     InvoiceController,
-    PaymentController   
+    PaymentController,
+    MerchantController   
 };
 
 /*
@@ -74,7 +75,6 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')-
         Route::post('/assingbrand',[UserController::class, 'assingBrandUser'])->name('AssingBrandUser');
         Route::post('/unassingbrand',[UserController::class, 'unassigneBrand'])->name('UnAssingBrandUser');
 
-
         Route::resource('posts','PostController');
         Route::resource('categories','CategoryController');
         Route::resource('brands','BrandController');
@@ -86,6 +86,9 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')-
 
         //Paymnet Gateways
         Route::resource('gateways','PaymentGatewayController');
+
+        //Merchant
+        Route::resource('merchants','MerchantController');
 
         //Team 
         Route::resource('teams','TeamController');
