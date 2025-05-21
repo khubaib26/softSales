@@ -294,7 +294,5 @@
         });
     </script>
     @php } @endphp 
-
 </body>
-
 </html>

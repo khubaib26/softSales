@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\Payment;
 use Braintree\Gateway;
+use Auth;
 //use App\Helpers\MerchantHelper;
 
 
@@ -194,5 +195,20 @@ class PaymentController extends Controller
                 return redirect()->back()->withSuccess('Payment Fail !!!');
             }
         }
-    }    
+    } 
+    
+    public function payment_list(){
+       
+        $userId = Auth::user()->id;
+  
+        if(Auth::user()->hasRole('admin'))
+        {
+            $payments = Payment::all();
+        }else{
+            //$invoices = Invoice::where('');
+        } 
+
+        dd($payments);
+        return view('setting.payment.list',['payments'=>$payments]);
+    }
 }

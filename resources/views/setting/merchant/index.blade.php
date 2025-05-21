@@ -26,11 +26,11 @@
 </div>
 <div class="container-fluid">
 <div class="card p-4">
-  <h4 class="mb-3">Activate Payment Methods</h4>
+  <h4 class="mb-3">Activate Payment Merchant</h4>
   <form id="payment-method-form" method="POST" action="{{ route('admin.merchants.store')}}">
     @csrf
     <div class="row">
-       
+    @can('Merchant access')   
     @foreach($merchants as $merchant) 
         <!-- PayPal -->
       <div class="col-md-4 mb-3">
@@ -42,13 +42,14 @@
             
             <!-- Logo center -->
             <img src="/images/gateway_logos/{{$merchant->logo}}" alt="{{$merchant->name}}" 
-                class="mx-auto mb-2" width="50">
+                class="mx-auto mb-2" width="80">
 
             <!-- Name -->
             <label for="braintree" class="mt-2 fw-bold">{{$merchant->name}}</label>
         </div>
         </div>
     @endforeach
+    @endcan
     </div>
 
     <button type="submit" class="btn btn-success mt-3">Save</button>

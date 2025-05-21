@@ -50,8 +50,7 @@ class MerchantController extends Controller
             Merchant::where('id', $data)->update(['status' => '1']);
         }
 
-        return redirect()->back()->withSuccess('Section deleted !!!');
-            
+        return redirect()->back()->withSuccess('Section deleted !!!');        
     }
 
     /**
