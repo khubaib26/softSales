@@ -51,7 +51,14 @@
                             @can('Brand access')
                             @foreach($brands as $brand)
                             <tr>
-                                <th scope="row"><img src="{{ $brand->logo }}" width="100"></th>
+                                <th scope="row">
+                                    
+                                    <img src="{{ $brand->logo }}" width="100" style="filter: brightness(0) invert(0);"> 
+
+                                <!-- <div style="background: #f0f0f0; display: inline-flex; align-items: center; justify-content: center; width: 100px; height: 50px; border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,0.1);">
+  <img src="{{ $brand->logo }}" style="max-height: 80%; max-width: 80%;">
+</div> -->
+                                </th>
                                 <td><a href="{{ $brand->brand_url }}" traget="_blank">{{ $brand->name }}</a></td>
                                 <td>{{ $brand->category->name }}</td>
                                 <td>{{ $brand->team->name }}</td>

@@ -208,7 +208,7 @@ class PaymentController extends Controller
             //$invoices = Invoice::where('');
         } 
 
-        dd($payments);
+        //dd($payments);
         return view('setting.payment.list',['payments'=>$payments]);
     }
 }

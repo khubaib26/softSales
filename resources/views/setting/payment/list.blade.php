@@ -18,7 +18,7 @@
                     <h3>Dashboard
                     </h3>
                 </div>
-                <li class="breadcrumb-item">Invoice</li>
+                <li class="breadcrumb-item">Payments</li>
                 <li class="breadcrumb-item active">List</li>
             </div>
         </div>
@@ -29,12 +29,6 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    @can('Invoice create')
-                    <h5 class="card-title" style="text-align:right;">
-                        <a href="{{route('admin.invoices.create')}}" class="btn btn-success"><i class="fa fa-plus-lg"></i>New Invoice</a>
-                    </h5>
-                    @endcan
-
                     <!-- Default Table -->
                     <table class="table" id="UserTable">
                         <thead>
@@ -43,45 +37,20 @@
                                 <th scope="col">Brand</th>
                                 <th scope="col">Client</th>
                                 <th scope="col">Agent</th>
-                                <th scope="col">Due Date</th>
                                 <th scope="col">Amount</th>
-                                <th scope="col">Sales Type</th>
-                                <th>Status</th>
-                                <th scope="col" style="width:200px;">Actions</th>
+                                <th scope="col">Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @can('Invoice access')
-                            @foreach($invoices as $invoice)
-                            @php
-                            $color = ($invoice->status == 'due') ? 'bg-warning' : (($invoice->status == 'paid') ? 'bg-success' : (($invoice->status == 'refund') ? 'bg-info' : 'bg-danger'));   
-                            @endphp
+                            @can('Payment access')
+                            @foreach($payments as $payment)
                             <tr>
-                                <th scope="row">{{ $invoice->id }}</th>
-                                <td>{{ $invoice->brand->name }}</td>
-                                <td>{{ $invoice->client->name }}</td>
-                                <td>{{ $invoice->user->name }}</td>
-                                <td>{{ $invoice->due_date }}</td>
-                                <td>${{ $invoice->amount }}</td>
-                                <td>{{ $invoice->sales_type }}</td>
-                                <td class="badge rounded-pill {{$color}}">{{ $invoice->status }}</td>
-                                <td>
-                                    <div class="d-flex flex-row">
-                                        <a class="btn-sm btn-primary" href="{{ route('admin.payments.show',$invoice->invoice_number) }}" title="Profile"><i class="fa-solid fa-credit-card"></i></a>
-                                        @can('invoices edit')
-                                        <a href="{{route('admin.invoices.edit',$invoice->id)}}" class="btn-sm btn-success"><i class="fa fa-pencil text-white"></i></a>
-                                        @endcan
-
-                                        @can('invoices delete')
-                                        <form action="{{ route('admin.invoices.destroy', $invoice->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('delete')
-                                            <button class="btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                        </form>
-                                        @endcan
-                                        <a class="btn-sm btn-primary" href="{{ route('admin.invoices.show',$invoice->id) }}" title="Profile"><i class="fa-solid fa-user"></i></a>
-                                    </div>
-                                </td>
+                                <th scope="row">{{ $payment->id }}</th>
+                                <td>{{ $payment->brand->name }}</td>
+                                <td>{{ $payment->client->name }}</td>
+                                <td>{{ $payment->user->name }}</td>
+                                <td>{{ $payment->paid_at }}</td>
+                                <td>${{ $payment->amount }}</td>
                             </tr>
                             @endforeach
                             @endcan

@@ -32,12 +32,30 @@
             <div class="heading">
                 <h1>Confirm Purchase</h1>
             </div>
-            <div class="invoice-details">
-                <div style="width: 40%;float: left;">
-                    <h4>Invoice Number #: {{$invoice->invoice_number}}</h4>                    
-                </div>
-                <div style="width: 40%;float: right;">
-                    <h5>Payment Gateway: {{$invoice->paymentGateway->merchant->name}}</h5>                    
+            <div class="invoice-details mb-4">
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <div class="d-flex flex-column">
+                            <h4 class="mb-2">Invoice #: {{$invoice->invoice_number}}</h4>
+                            <div class="d-flex align-items-center">
+                                <span class="me-2">Status:</span>
+                                @if($invoice->status == 'paid')
+                                    <span class="badge bg-success">Paid</span>
+                                @else
+                                    <span class="badge bg-warning text-dark">Unpaid</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div class="col-md-6 text-md-end">
+                        <div class="d-flex flex-column">
+                            <h5 class="mb-2">Payment Gateway: {{$invoice->paymentGateway->merchant->name}}</h5>
+                            <h4 class="text-primary">Total Amount: {{ number_format($invoice->amount, 2) }} {{ $invoice->currency }}</h4>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="payment">
@@ -136,10 +154,20 @@
                         <img src="{{ asset('payment-assets/images/amex.jpg') }}" id="amex">
                     </div>
                     @php } @endphp
-                    <div class="form-group" id="pay-now">
+                    
+                    <!-- <div class="form-group" id="pay-now">
                         <input id="nonce" name="payment_method_nonce" type="hidden" />
                         <button type="submit" class="btn btn-default" id="card-button">Confirm</button>
+                    </div> -->
+
+                    @if($invoice->status != 'paid')
+                    <div class="form-group mt-2" id="pay-now">
+                        <input id="nonce" name="payment_method_nonce" type="hidden" />
+                        <button type="submit" class="btn btn-primary" id="card-button">
+                            <i class="fas fa-credit-card me-2"></i> Confirm Payment
+                        </button>
                     </div>
+                    @endif
                 </form>
             </div>
         </div>
