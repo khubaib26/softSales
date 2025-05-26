@@ -1,311 +1,166 @@
-{{-- <header id="header" class="header fixed-top d-flex align-items-center">
+<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle js-sidebar-toggle">
+          			<i class="hamburger align-self-center"></i>
+        		</a>
 
-    <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
-      </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="bell"></i>
+									<span class="indicator">8</span>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
+								<div class="dropdown-menu-header">
+									4 New Notifications
+								</div>
+								<div class="list-group">
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<i class="text-danger" data-feather="alert-circle"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">Update completed</div>
+												<div class="text-muted small mt-1">Restart server 12 to complete the update.</div>
+												<div class="text-muted small mt-1">30m ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<i class="text-warning" data-feather="bell"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">Lorem ipsum</div>
+												<div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate hendrerit et.</div>
+												<div class="text-muted small mt-1">2h ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<i class="text-primary" data-feather="home"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">Login from 192.186.1.8</div>
+												<div class="text-muted small mt-1">5h ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<i class="text-success" data-feather="user-plus"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">New connection</div>
+												<div class="text-muted small mt-1">Christina accepted your request.</div>
+												<div class="text-muted small mt-1">14h ago</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a href="#" class="text-muted">Show all notifications</a>
+								</div>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown" data-bs-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="message-square"></i>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="messagesDropdown">
+								<div class="dropdown-menu-header">
+									<div class="position-relative">
+										4 New Messages
+									</div>
+								</div>
+								<div class="list-group">
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<img src="{{ asset('images/avatars/avatar-5.jpg') }}" class="avatar img-fluid rounded-circle" alt="Vanessa Tucker">
+											</div>
+											<div class="col-10 ps-2">
+												<div class="text-dark">Vanessa Tucker</div>
+												<div class="text-muted small mt-1">Nam pretium turpis et arcu. Duis arcu tortor.</div>
+												<div class="text-muted small mt-1">15m ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<img src="{{ asset('images/avatars/avatar-2.jpg') }}" class="avatar img-fluid rounded-circle" alt="William Harris">
+											</div>
+											<div class="col-10 ps-2">
+												<div class="text-dark">William Harris</div>
+												<div class="text-muted small mt-1">Curabitur ligula sapien euismod vitae.</div>
+												<div class="text-muted small mt-1">2h ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<img src="{{ asset('images/avatars/avatar-4.jpg') }}" class="avatar img-fluid rounded-circle" alt="Christina Mason">
+											</div>
+											<div class="col-10 ps-2">
+												<div class="text-dark">Christina Mason</div>
+												<div class="text-muted small mt-1">Pellentesque auctor neque nec urna.</div>
+												<div class="text-muted small mt-1">4h ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<img src="{{ asset('images/avatars/avatar-3.jpg') }}" class="avatar img-fluid rounded-circle" alt="Sharon Lessman">
+											</div>
+											<div class="col-10 ps-2">
+												<div class="text-dark">Sharon Lessman</div>
+												<div class="text-muted small mt-1">Aenean tellus metus, bibendum sed, posuere ac, mattis non.</div>
+												<div class="text-muted small mt-1">5h ago</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a href="#" class="text-muted">Show all messages</a>
+								</div>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
-    <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
-
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
-          </a><!-- End Notification Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
-
-          </ul><!-- End Notification Dropdown Items -->
-
-        </li><!-- End Notification Nav -->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
-          </a><!-- End Messages Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="{{ asset('assets/img/messages-1.jpg')}}" alt="" class="rounded-circle">
-<div>
-    <h4>Maria Hudson</h4>
-    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-    <p>4 hrs. ago</p>
-</div>
-</a>
-</li>
-<li>
-    <hr class="dropdown-divider">
-</li>
-
-<li class="message-item">
-    <a href="#">
-        <img src="{{ asset('assets/img/messages-2.jpg')}}" alt="" class="rounded-circle">
-        <div>
-            <h4>Anna Nelson</h4>
-            <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-            <p>6 hrs. ago</p>
-        </div>
-    </a>
-</li>
-<li>
-    <hr class="dropdown-divider">
-</li>
-
-<li class="message-item">
-    <a href="#">
-        <img src="{{ asset('assets/img/messages-3.jpg')}}" alt="" class="rounded-circle">
-        <div>
-            <h4>David Muldon</h4>
-            <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-            <p>8 hrs. ago</p>
-        </div>
-    </a>
-</li>
-<li>
-    <hr class="dropdown-divider">
-</li>
-
-<li class="dropdown-footer">
-    <a href="#">Show all messages</a>
-</li>
-
-</ul><!-- End Messages Dropdown Items -->
-
-</li><!-- End Messages Nav -->
-
-<li class="nav-item dropdown pe-3">
-
-    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-        <img src="{{ asset('assets/img/profile-img.jpg')}}" alt="Profile" class="rounded-circle">
-        <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
-    </a><!-- End Profile Iamge Icon -->
-
-    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-        <li class="dropdown-header">
-            <h6>Kevin Anderson</h6>
-            <span>Web Designer</span>
-        </li>
-        <li>
-            <hr class="dropdown-divider">
-        </li>
-
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-            </a>
-        </li>
-        <li>
-            <hr class="dropdown-divider">
-        </li>
-
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-            </a>
-        </li>
-        <li>
-            <hr class="dropdown-divider">
-        </li>
-
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-            </a>
-        </li>
-        <li>
-            <hr class="dropdown-divider">
-        </li>
-
-        <li>
-            <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
-            </a>
-        </li>
-
-    </ul><!-- End Profile Dropdown Items -->
-</li><!-- End Profile Nav -->
-
-</ul>
-</nav><!-- End Icons Navigation -->
-
-</header> --}}
-
-<!-- Page Header Start-->
-<div class="page-main-header">
-    <div class="main-header-right row">
-        <div class="main-header-left d-lg-none w-auto">
-            <div class="logo-wrapper">
-                <a href="index.html">
-                    <img class="blur-up lazyloaded d-block d-lg-none" src="https://themes.pixelstrap.com/multikart/back-end/assets/images/dashboard/user3.jpg" alt>
-                </a>
-            </div>
-        </div>
-        <div class="mobile-sidebar w-auto">
-            <div class="media-body text-end switch-sm">
-                <label class="switch">
-                    <a href="javascript:void(0)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-align-left" id="sidebar-toggle">
-                            <line x1="17" y1="10" x2="3" y2="10"></line>
-                            <line x1="21" y1="6" x2="3" y2="6"></line>
-                            <line x1="21" y1="14" x2="3" y2="14"></line>
-                            <line x1="17" y1="18" x2="3" y2="18"></line>
-                        </svg>
-                    </a>
-                </label>
-            </div>
-        </div>
-        <div class="nav-right col">
-            <ul class="nav-menus">
-
-                <li>
-                    <a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize-2">
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <polyline points="9 21 3 21 3 15"></polyline>
-                            <line x1="21" y1="3" x2="14" y2="10"></line>
-                            <line x1="3" y1="21" x2="10" y2="14"></line>
-                        </svg>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="javascript:void(0)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square right_side_toggle">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg><span class="dot"></span>
-                    </a>
-                </li>
-                <li class="onhover-dropdown">
-                    <div class="media align-items-center"><img class="align-self-center pull-right img-50 blur-up lazyloaded" src="https://themes.pixelstrap.com/multikart/back-end/assets/images/dashboard/user3.jpg" alt="header-user">
-                        <div class="dotted-animation"><span class="animate-circle"></span><span class="main-circle"></span></div>
-                    </div>
-                    <ul class="profile-dropdown onhover-show-div p-20">
-                        <li>
-                            <a href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>Edit
-                                Profile
-                            </a>
-                        </li>
-                        <li>
-                            <form method="POST" action="{{ route('admin.logout') }}">
-                            @csrf
-                            <a href="{{ route('admin.logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out">
-                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                    <polyline points="16 17 21 12 16 7"></polyline>
-                                    <line x1="21" y1="12" x2="9" y2="12"></line>
-                                </svg>Logout
-                            </a>
-                            </form>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="d-lg-none mobile-toggle pull-right"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal">
-                    <circle cx="12" cy="12" r="1"></circle>
-                    <circle cx="19" cy="12" r="1"></circle>
-                    <circle cx="5" cy="12" r="1"></circle>
-                </svg>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Page Header Ends -->
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                <img src="{{ asset('images/avatars/avatar.jpg') }}" class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
+              </a>
+							<div class="dropdown-menu dropdown-menu-end">
+								<a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+								<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.html"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</a>
+								<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
+								<div class="dropdown-divider"></div>
+								<form method="POST" action="{{ route('admin.logout') }}">
+                  @csrf
+                  <a class="dropdown-item" href="{{ route('admin.logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
+                  Log out
+                  </a>
+                </form>  
+                <!-- <a class="dropdown-item" href="#">Log out</a> -->
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
